@@ -1,0 +1,33 @@
+IMPORTANT — GITHUB PAGES UPLOAD
+
+Upload ALL files inside this ZIP directly into your GitHub repository.
+
+Your repository root must show:
+index.html
+styles.css
+app.js
+assets/
+auth.html
+teams.html
+players.html
+profile.html
+
+Do NOT upload the ZIP itself.
+Do NOT upload a folder containing the files.
+The files must be directly visible in the repo root.
+
+Then go:
+Settings > Pages
+
+Set:
+Source: Deploy from a branch
+Branch: main
+Folder: /root
+
+Save.
+
+Your free website link will be:
+https://trozii.github.io/VCC/
+
+If you rename the repo to playvcc:
+https://trozii.github.io/playvcc/
