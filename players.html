@@ -1,0 +1,33 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Players — VCC</title><link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="assets/favicon.png"></head><body>
+
+<header class="site-header">
+  <div class="nav-wrap professional-nav">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <button class="mobile-menu-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="admin.html">Admin</a>
+      <a class="discord-nav" href="https://discord.gg/qCDzKjKZ2v" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+
+
+<main class="page"><h1>Players</h1><div class="notice">Emails are private. Only public profile details appear here.</div><div id="playersBox" class="cards"></div></main>
+<script type="module">
+import {getPlayers,subscribeToTable} from './app.js'
+async function render(){try{const data=await getPlayers();playersBox.innerHTML=data.length?data.map(p=>{const active=(p.team_memberships||[]).find(m=>m.status==='active');return `<div class="card">${p.avatar_url ? `<img class="player-avatar" src="${p.avatar_url}" alt="${p.username} profile picture">` : `<div class="avatar-placeholder">${(p.username||'P')[0].toUpperCase()}</div>`}<h3>${p.username}</h3><p>${p.riot_id||'Riot ID not set'}</p><span class="tag">${p.role||'Role not set'}</span><span class="tag">${p.platform||'Platform not set'}</span><span class="tag">${active?active.teams?.name:'Free Agent'}</span><p>${p.bio||''}</p></div>`}).join(''):'<div class="card"><p>No registered players yet.</p></div>'}catch(e){playersBox.innerHTML='<div class="card"><p>'+e.message+'</p></div>'}}
+render();subscribeToTable('profiles',render);subscribeToTable('team_memberships',render)
+</script></body></html>
