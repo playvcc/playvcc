@@ -1,0 +1,9 @@
+VCC Admin Code
+
+Primary code: VCC2026
+Backup code: SINVCC
+
+To change the code later, open vcc-ops.js and edit this line:
+const VCC_ADMIN_CODES=['VCC2026','SINVCC'];
+
+Important: this is a simple front-end admin lock for convenience. For true security, use Supabase login/admin roles before public launch.

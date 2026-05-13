@@ -1,0 +1,36 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Leaderboard — VCC</title><link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="assets/favicon.png"></head><body>
+
+<header class="site-header">
+  <div class="nav-wrap professional-nav">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <button class="mobile-menu-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="admin.html">Admin</a>
+      <a class="discord-nav" href="https://discord.gg/qCDzKjKZ2v" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+
+
+<main class="page"><h1>VCC Leaderboard</h1><p>Multiple ranking pages: Teams, Players, and Free Agents.</p><div class="tabs"><button class="tab active" data-page="teams">Teams</button><button class="tab" data-page="players">Players</button><button class="tab" data-page="freeagents">Free Agents</button></div><div class="tabs" id="divisionTabs"><button class="tab active" data-div="all">All</button><button class="tab" data-div="VCC Elite">VCC Elite</button><button class="tab" data-div="VCC Contenders">VCC Contenders</button><button class="tab" data-div="WCC — Women’s Console Circuit">WCC</button></div><div id="board"></div></main>
+<script type="module">
+import {getTeams,getPlayers,subscribeToTable} from './app.js'
+let currentPage='teams', currentDiv='all'
+async function render(){if(currentPage==='teams'){let list=await getTeams();if(currentDiv!=='all')list=list.filter(t=>t.division===currentDiv);list=list.sort((a,b)=>(b.pro_points-a.pro_points)||((b.maps_won-b.maps_lost)-(a.maps_won-a.maps_lost))||((b.rounds_won-b.rounds_lost)-(a.rounds_won-a.rounds_lost)));board.innerHTML=`<table class="leaderboard"><thead><tr><th>Rank</th><th>Team</th><th>Division</th><th>Record</th><th>Maps</th><th>Rounds</th><th>Pro Points</th></tr></thead><tbody>${list.map((t,i)=>`<tr><td class="rank">#${i+1}</td><td>${t.logo_url ? `<img src="${t.logo_url}" alt="${t.name} logo" style="width:28px;height:28px;object-fit:contain;vertical-align:middle;margin-right:8px;border-radius:6px;">` : ''}${t.name} <span class="tag">${t.tag}</span></td><td>${t.division}</td><td>${t.wins}-${t.losses}</td><td>${t.maps_won}-${t.maps_lost}</td><td>${t.rounds_won}-${t.rounds_lost}</td><td><strong>${t.pro_points}</strong></td></tr>`).join('')||'<tr><td colspan="7">No teams yet.</td></tr>'}</tbody></table>`}else{let players=await getPlayers();if(currentPage==='freeagents')players=players.filter(p=>!(p.team_memberships||[]).some(m=>m.status==='active') && p.looking_for_team);board.innerHTML=`<table class="leaderboard"><thead><tr><th>Rank</th><th>Username</th><th>Riot ID</th><th>Role</th><th>Platform</th><th>Status</th></tr></thead><tbody>${players.map((p,i)=>{const active=(p.team_memberships||[]).find(m=>m.status==='active');return `<tr><td class="rank">#${i+1}</td><td>${p.username}</td><td>${p.riot_id||'-'}</td><td>${p.role||'-'}</td><td>${p.platform||'-'}</td><td>${active?active.teams?.name:'Free Agent'}</td></tr>`}).join('')||'<tr><td colspan="6">No players found.</td></tr>'}</tbody></table>`}}
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-page]').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentPage=b.dataset.page;divisionTabs.style.display=currentPage==='teams'?'flex':'none';render()})
+document.querySelectorAll('[data-div]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-div]').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentDiv=b.dataset.div;render()})
+render();subscribeToTable('teams',render);subscribeToTable('profiles',render);subscribeToTable('team_memberships',render)
+</script></body></html>
