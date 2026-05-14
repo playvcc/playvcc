@@ -1,0 +1,1 @@
+import { supabase } from './app.js';queueBtn.onclick=async()=>{try{const {data,error}=await supabase.from('scrim_queue').insert({team_id:teamId.value.trim()||null,region:region.value,status:'searching'}).select().single();if(error)throw error;status.textContent='Queued. Queue ID: '+data.id}catch(e){status.textContent='Queue error: '+e.message}};
