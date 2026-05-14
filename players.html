@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Players — VCC</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="players-cmg.css">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+
+<body>
+<header class="site-header">
+  <div class="nav-wrap professional-nav">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+
+    <button class="mobile-menu-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="teams.html">Teams</a>
+      <a href="create-team.html">Create Team</a>
+      <a href="manage-team.html">Manage Team</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="admin.html">Admin</a>
+      <a class="discord-nav" href="https://discord.gg/qCDzKjKZ2v" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+
+<main class="players-page">
+  <section class="players-hero">
+    <div>
+      <div class="eyebrow">VCC Player Database</div>
+      <h1>Players</h1>
+      <p>Browse console Valorant competitors, view public profiles, compare ranks, and find free agents.</p>
+    </div>
+
+    <div class="players-hero-card">
+      <strong id="totalPlayers">0</strong>
+      <span>Registered Players</span>
+    </div>
+  </section>
+
+  <section class="players-controls">
+    <input id="playerSearch" type="search" placeholder="Search player, Riot ID, team, role, platform...">
+
+    <select id="platformFilter">
+      <option value="">All Platforms</option>
+      <option value="ps5">PS5</option>
+      <option value="playstation">PlayStation</option>
+      <option value="xbox">Xbox</option>
+    </select>
+
+    <select id="roleFilter">
+      <option value="">All Roles</option>
+      <option value="duelist">Duelist</option>
+      <option value="controller">Controller</option>
+      <option value="initiator">Initiator</option>
+      <option value="sentinel">Sentinel</option>
+      <option value="igl">IGL</option>
+      <option value="flex">Flex</option>
+    </select>
+
+    <select id="teamFilter">
+      <option value="">All Players</option>
+      <option value="free agent">Free Agents</option>
+      <option value="on team">On Team</option>
+    </select>
+  </section>
+
+  <section class="players-table-wrap">
+    <div class="players-table-header">
+      <span>Player</span>
+      <span>Riot ID</span>
+      <span>Role</span>
+      <span>Platform</span>
+      <span>Team</span>
+      <span>Profile</span>
+    </div>
+
+    <div id="playersBox" class="players-list">
+      <div class="player-row loading">Loading players...</div>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+import { getPlayers, subscribeToTable } from './app.js';
+
+let allPlayers = [];
+
+const playersBox = document.getElementById('playersBox');
+const totalPlayers = document.getElementById('totalPlayers');
+const playerSearch = document.getElementById('playerSearch');
+const platformFilter = document.getElementById('platformFilter');
+const roleFilter = document.getElementById('roleFilter');
+const teamFilter = document.getElementById('teamFilter');
+
+function safe(value){
+  return String(value || '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#039;'
+  }[c]));
+}
+
+function profileUrl(p, activeTeam){
+  const q = new URLSearchParams();
+
+  if(p.id) q.set('user', p.id);
+  if(p.username) q.set('name', p.username);
+  if(p.riot_id) q.set('riot', p.riot_id);
+  if(p.role) q.set('role', p.role);
+  if(p.platform) q.set('platform', p.platform);
+  if(p.rank) q.set('rank', p.rank);
+  if(p.region) q.set('region', p.region);
+  if(p.avatar_url) q.set('avatar', p.avatar_url);
+  q.set('team', activeTeam || 'Free Agent');
+
+  return 'profile.html?' + q.toString();
+}
+
+function getActiveTeam(p){
+  const active = (p.team_memberships || []).find(m => m.status === 'active');
+  return active ? (active.teams?.name || 'On Team') : 'Free Agent';
+}
+
+function matchesFilters(p){
+  const activeTeam = getActiveTeam(p);
+  const text = [
+    p.username,
+    p.riot_id,
+    p.role,
+    p.platform,
+    p.rank,
+    p.region,
+    activeTeam,
+    p.bio
+  ].join(' ').toLowerCase();
+
+  const search = playerSearch.value.trim().toLowerCase();
+  const platform = platformFilter.value.toLowerCase();
+  const role = roleFilter.value.toLowerCase();
+  const team = teamFilter.value.toLowerCase();
+
+  if(search && !text.includes(search)) return false;
+  if(platform && !(p.platform || '').toLowerCase().includes(platform)) return false;
+  if(role && !(p.role || '').toLowerCase().includes(role)) return false;
+  if(team === 'free agent' && activeTeam !== 'Free Agent') return false;
+  if(team === 'on team' && activeTeam === 'Free Agent') return false;
+
+  return true;
+}
+
+function renderPlayers(){
+  const filtered = allPlayers.filter(matchesFilters);
+
+  totalPlayers.textContent = allPlayers.length;
+
+  if(!filtered.length){
+    playersBox.innerHTML = `
+      <div class="player-row empty">
+        <strong>No players found.</strong>
+        <span>Try clearing filters or search.</span>
+      </div>
+    `;
+    return;
+  }
+
+  playersBox.innerHTML = filtered.map(p => {
+    const activeTeam = getActiveTeam(p);
+    const avatar = p.avatar_url
+      ? `<img class="player-avatar" src="${safe(p.avatar_url)}" alt="${safe(p.username || 'Player')} profile picture">`
+      : `<div class="avatar-placeholder">${safe((p.username || 'P')[0]).toUpperCase()}</div>`;
+
+    return `
+      <article class="player-row">
+        <a class="player-main" href="${profileUrl(p, activeTeam)}">
+          ${avatar}
+          <div>
+            <strong>${safe(p.username || p.display_name || 'Unnamed Player')}</strong>
+            <small>${safe(p.rank || 'Rank not set')} · ${safe(p.region || 'Region not set')}</small>
+          </div>
+        </a>
+
+        <span class="player-cell">${safe(p.riot_id || 'Not set')}</span>
+        <span class="tag">${safe(p.role || 'Role not set')}</span>
+        <span class="tag">${safe(p.platform || 'Platform not set')}</span>
+        <span class="team-pill ${activeTeam === 'Free Agent' ? 'free' : ''}">${safe(activeTeam)}</span>
+
+        <a class="view-profile-btn" href="${profileUrl(p, activeTeam)}">View</a>
+      </article>
+    `;
+  }).join('');
+}
+
+async function loadPlayers(){
+  try{
+    const data = await getPlayers();
+    allPlayers = Array.isArray(data) ? data : [];
+    renderPlayers();
+  }catch(e){
+    playersBox.innerHTML = `<div class="player-row empty"><strong>${safe(e.message)}</strong></div>`;
+  }
+}
+
+[playerSearch, platformFilter, roleFilter, teamFilter].forEach(el => {
+  el.addEventListener('input', renderPlayers);
+  el.addEventListener('change', renderPlayers);
+});
+
+loadPlayers();
+subscribeToTable('profiles', loadPlayers);
+subscribeToTable('team_memberships', loadPlayers);
+</script>
+</body>
+</html>
