@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Tournaments — VCC</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vcc-unified.css">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap professional-nav">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <button class="mobile-menu-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="teams.html">Teams</a>
+      <a href="create-team.html">Create Team</a>
+      <a href="manage-team.html">Manage Team</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="admin.html">Admin</a>
+      <a class="discord-nav" href="https://discord.gg/qCDzKjKZ2v" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+
+<main class="vcc-page">
+  <div class="vcc-kicker">VCC Competition Hub</div>
+  <h1>Tournaments</h1>
+  <p>Open qualifiers, preseason leagues, group stages, majors, LCQ events, and championship finals are managed here.</p>
+
+  <section id="tournamentsBox" class="tournament-list">
+    <div class="notice">
+      <h3>No tournaments created yet.</h3>
+      <p>Staff can create tournaments inside the admin panel.</p>
+    </div>
+  </section>
+</main>
+
+<footer>VCC — Valorant Console Circuit</footer>
+
+<script type="module">
+import { supabase } from './app.js';
+
+const box = document.getElementById('tournamentsBox');
+
+function safe(value){
+  return String(value || '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+  }[c]));
+}
+
+async function loadTournaments(){
+  try{
+    const { data, error } = await supabase
+      .from('tournaments')
+      .select('*')
+      .order('start_date', { ascending:true, nullsFirst:false });
+
+    if(error) throw error;
+
+    if(!data || !data.length){
+      box.innerHTML = `
+        <div class="notice">
+          <h3>No tournaments created yet.</h3>
+          <p>Staff can create tournaments inside the admin panel.</p>
+        </div>
+      `;
+      return;
+    }
+
+    box.innerHTML = data.map(t => `
+      <article class="tournament-card">
+        <div>
+          <span class="status-pill">${safe(t.status || 'upcoming')}</span>
+          <h3>${safe(t.name || 'VCC Tournament')}</h3>
+          <p><strong>Category:</strong> ${safe(t.tournament_category || 'Open Qualifier')} · <strong>Format:</strong> ${safe(t.format || 'TBD')}</p>
+          <p><strong>Starts:</strong> ${safe(t.start_date ? new Date(t.start_date).toLocaleString() : 'TBD')}</p>
+          <p><strong>Roster Lock:</strong> ${safe(t.roster_lock_at ? new Date(t.roster_lock_at).toLocaleString() : 'TBD')}</p>
+        </div>
+        <a class="view-event-btn" href="matches.html">View Event</a>
+      </article>
+    `).join('');
+  }catch(err){
+    box.innerHTML = `<div class="notice"><h3>Could not load tournaments</h3><p>${safe(err.message)}</p></div>`;
+  }
+}
+
+loadTournaments();
+</script>
+
+<style>
+.tournament-list{display:grid;gap:18px;margin-top:28px}
+.tournament-card{
+  padding:22px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+}
+.tournament-card h3{color:var(--vcc-red);margin:14px 0 16px;font-size:22px}
+.tournament-card p{color:var(--vcc-muted);margin:10px 0}
+@media(max-width:700px){.tournament-card{display:block}.view-event-btn{margin-top:16px}}
+</style>
+</body>
+</html>
