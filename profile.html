@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>VCC Profile</title>
+<link rel="stylesheet" href="styles.css">
+
+<style>
+body{background:#080808;color:#fff;font-family:Arial;margin:0}
+nav{padding:18px;background:#111;display:flex;gap:14px;flex-wrap:wrap}
+nav a{color:#fff;text-decoration:none;font-weight:bold}
+.wrap{max-width:1100px;margin:35px auto;padding:20px}
+.card{background:#111;border:1px solid #2d2d2d;border-radius:16px;padding:20px;margin-bottom:18px}
+input,select,textarea{width:100%;box-sizing:border-box;padding:12px;background:#070707;color:#fff;border:1px solid #333;border-radius:10px;margin:7px 0}
+button,.btn{background:#f5c542;color:#000;border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;margin-top:8px}
+.btn.secondary,button.secondary{background:#242424;color:#fff;border:1px solid #444}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.log{background:#070707;border-radius:12px;padding:12px;min-height:90px;white-space:pre-wrap}
+.meta{color:#aaa;font-size:13px}
+.avatar{width:150px;height:150px;object-fit:cover;border-radius:18px;border:2px solid #f5c542;background:#050505}
+.admin-lock{position:fixed;inset:0;background:#050505;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px}
+.admin-lock-box{max-width:460px;width:100%;background:#111;border:1px solid #333;border-radius:18px;padding:28px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.admin-content{display:none}
+.admin-content.unlocked{display:block}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="profile.html">Profile</a>
+<a href="players.html">Players</a>
+<a href="teams.html">Teams</a>
+<a href="inbox.html">Inbox</a>
+</nav>
+
+<main class="wrap">
+<section class="card">
+<h1>My VCC Profile</h1>
+<div class="grid">
+  <div>
+    <img id="profileAvatar" class="avatar" src="assets/vcc-logo.png" alt="Profile picture">
+    <input id="avatarFile" type="file" accept="image/*">
+    <button id="uploadAvatarBtn">Upload Profile Picture</button>
+  </div>
+  <div>
+    <input id="displayName" placeholder="Profile Name">
+    <input id="riotId" placeholder="Riot ID">
+    <input id="rank" placeholder="Current Rank">
+    <input id="platform" placeholder="Platform ex: PS5 / Xbox">
+    <input id="region" placeholder="Region">
+    <input id="mainRole" placeholder="Main Role">
+    <input id="mainAgents" placeholder="Main Agents">
+    <textarea id="bio" rows="4" placeholder="Profile Bio"></textarea>
+    <button id="saveProfileBtn">Save Profile</button>
+    <a id="messageBtn" class="btn secondary" href="message-player.html">Message Player</a>
+  </div>
+</div>
+<div id="profileStatus" class="log">Ready.</div>
+</section>
+
+<section class="card">
+<h2>Stats</h2>
+<div class="grid">
+  <div class="log">Wins: <strong id="winsText">0</strong></div>
+  <div class="log">Losses: <strong id="lossesText">0</strong></div>
+  <div class="log">Pro Points: <strong id="pointsText">0</strong></div>
+  <div class="log">Rating: <strong id="ratingText">1000</strong></div>
+</div>
+</section>
+
+<section class="card">
+<h2>Messages / Notifications</h2>
+<div id="profileMessages" class="log">Loading messages...</div>
+</section>
+</main>
+
+<script src="supabase-config.js"></script>
+<script src="vcc-message.js"></script>
+<script src="profile-edit.js"></script>
+</body>
+</html>
