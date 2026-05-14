@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VCC — Valorant Console Circuit</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap professional-nav">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span>
+        <strong>VCC</strong>
+        <small>Valorant Console Circuit</small>
+      </span>
+    </a>
+
+    <button class="mobile-menu-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="create-team.html">Create Team</a>
+      <a href="manage-team.html">Manage Team</a>
+      <a href="inbox.html">Invites</a>
+      <a class="discord-nav" href="https://discord.gg/RsMdZ2nHnx" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+
+
+<main class="hero">
+  <div>
+    <p class="eyebrow">Official console Valorant league platform</p>
+    <h1>Valorant Console Circuit</h1>
+    <p class="eyebrow">Organized by SiN — Strength in Numbers</p>
+    <p class="lead">VCC is a competitive console Valorant ecosystem built for players, teams, creators, and organizations that want a structured path from open competition to elite championship play.</p>
+    <p>Players create profiles, captains build teams, rosters are controlled through invites, and teams earn Pro Points through weekly cups, majors, qualifiers, and championship events. VCC gives console players a real league hub with rankings, player history, team pages, free agent discovery, and scrim matchmaking.</p>
+    <a class="btn primary" href="auth.html">Create Account</a>
+    <a class="btn ghost" href="leaderboard.html">View Leaderboard</a>
+    <a class="btn ghost" href="scrims.html">Find Scrim</a>
+  </div>
+  <img src="assets/vcc-logo.png" alt="VCC logo">
+</main>
+
+<section class="section">
+  <div class="cards three">
+    <div class="card"><h3>VCC Elite</h3><p>The top division for proven console teams. Placement is earned through results, qualifiers, staff review, and Pro Points.</p></div>
+    <div class="card"><h3>VCC Contenders</h3><p>The development tier for rising rosters, new organizations, free agents, and teams fighting to reach VCC Elite.</p></div>
+    <div class="card"><h3>WCC</h3><p>The Women’s Console Circuit, built to highlight women competitors and women-led teams in console Valorant.</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="cards two">
+    <div class="card">
+      <h3>How VCC Works</h3>
+      <p><strong>1.</strong> Players sign up with email, username, and password. Emails stay private.</p>
+      <p><strong>2.</strong> Players complete profiles with Riot ID, role, platform, bio, and free agent status.</p>
+      <p><strong>3.</strong> Captains create teams and invite players by username.</p>
+      <p><strong>4.</strong> Players accept invites, rosters lock, teams compete, and rankings update.</p>
+    </div>
+    <div class="card">
+      <h3>Official Features</h3>
+      <p><strong>Leaderboard:</strong> teams, players, and free agents are separated into clean ranking pages.</p>
+      <p><strong>One-team lock:</strong> players can only be on one active roster at a time.</p>
+      <p><strong>Scrim queue:</strong> captains queue teams and the site auto-matches another team waiting in the same division.</p>
+      <p><strong>Live backend:</strong> teams, rosters, invites, and scrims pull from Supabase.</p>
+    </div>
+  </div>
+</section>
+
+<footer>VCC — Valorant Console Circuit · Built for Console Competition
+<section class="section">
+  <div class="card" style="text-align:center">
+    <h2>Join the Official VCC Discord</h2>
+    <p>Find teammates, join tournaments, enter scrim queues, follow announcements, and compete in the Valorant Console Circuit community.</p>
+    <a class="btn primary" href="https://discord.gg/RsMdZ2nHnx" target="_blank">Join Discord</a>
+  </div>
+</section>
+
+</footer>
+</body>
+</html>
