@@ -1,0 +1,425 @@
+/* ======================================================
+   VCC Clean UI Polish Patch
+   Drop-in styling for older pages so the whole site feels consistent
+   ====================================================== */
+
+:root{
+  --vcc-bg:#050507;
+  --vcc-bg2:#09090d;
+  --vcc-card:#111116;
+  --vcc-card2:#16161d;
+  --vcc-border:rgba(255,255,255,.09);
+  --vcc-border2:rgba(255,255,255,.16);
+  --vcc-text:#ffffff;
+  --vcc-muted:#b8bdca;
+  --vcc-red:#ff294d;
+  --vcc-gold:#f5c542;
+  --vcc-blue:#5865f2;
+  --vcc-green:#22c55e;
+}
+
+*{box-sizing:border-box}
+
+html{
+  background:var(--vcc-bg);
+}
+
+body{
+  margin:0;
+  color:var(--vcc-text);
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(255,41,77,.10), transparent 35%),
+    radial-gradient(circle at 85% 10%, rgba(245,197,66,.05), transparent 25%),
+    linear-gradient(180deg,#08080c 0%,#030305 100%);
+  min-height:100vh;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.6),transparent 70%);
+}
+
+/* Header / nav */
+.site-header{
+  background:rgba(6,6,9,.92);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  backdrop-filter:blur(14px);
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+.nav-wrap,
+.professional-nav{
+  max-width:1260px;
+  margin:0 auto;
+  padding:18px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#fff;
+  text-decoration:none;
+  flex:0 0 auto;
+}
+
+.brand img{
+  width:58px;
+  height:58px;
+  object-fit:cover;
+  border-radius:14px;
+  background:#fff;
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 12px 30px rgba(0,0,0,.35);
+}
+
+.brand strong{
+  display:block;
+  font-size:27px;
+  line-height:.9;
+  letter-spacing:.02em;
+}
+
+.brand small{
+  display:block;
+  color:var(--vcc-muted);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.06em;
+}
+
+.main-nav{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:6px 16px;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:18px;
+  padding:12px 14px;
+}
+
+.main-nav a{
+  color:#f4f4f7;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:900;
+  padding:9px 4px;
+  transition:.15s ease;
+}
+
+.main-nav a:hover{
+  color:var(--vcc-red);
+  transform:translateY(-1px);
+}
+
+.discord-nav{
+  background:var(--vcc-blue);
+  color:#fff!important;
+  padding:11px 16px!important;
+  border-radius:11px;
+  box-shadow:0 10px 28px rgba(88,101,242,.25);
+}
+
+.mobile-menu-btn{
+  display:none;
+}
+
+/* Generic page layout */
+.page,
+.vcc-page,
+.wrap{
+  width:min(1180px, calc(100% - 40px));
+  margin:0 auto;
+  padding:72px 0 90px;
+}
+
+.page > h1,
+.vcc-page > h1,
+.wrap h1{
+  font-size:clamp(44px,7vw,82px);
+  line-height:.92;
+  text-transform:uppercase;
+  letter-spacing:-.045em;
+  margin:0 0 22px;
+}
+
+.page > h1::before,
+.vcc-page > h1::before{
+  content:"VCC COMPETITION HUB";
+  display:block;
+  color:var(--vcc-red);
+  font-size:13px;
+  letter-spacing:.24em;
+  margin-bottom:18px;
+  font-weight:900;
+}
+
+.page > p,
+.vcc-page > p{
+  color:#d6d9e3;
+  max-width:760px;
+  font-size:18px;
+  line-height:1.55;
+  margin-bottom:34px;
+}
+
+/* Cards */
+.card,
+.notice,
+.panel,
+.match-card,
+.tournament-card,
+.queue-card,
+.room-card{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));
+  border:1px solid var(--vcc-border);
+  border-radius:22px;
+  box-shadow:0 22px 55px rgba(0,0,0,.30);
+}
+
+.card,
+.panel,
+.queue-card,
+.room-card{
+  padding:22px;
+}
+
+.notice{
+  padding:24px 26px;
+  border-left:3px solid var(--vcc-red);
+  margin:24px 0;
+}
+
+.notice h3,
+.card h3,
+.panel h3{
+  color:var(--vcc-red);
+  margin-top:0;
+}
+
+.notice p,
+.card p,
+.panel p{
+  color:var(--vcc-muted);
+  line-height:1.55;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:18px;
+  margin-top:28px;
+}
+
+.cards a.card,
+a.card{
+  color:inherit;
+  text-decoration:none;
+  display:block;
+}
+
+.cards .card:hover,
+a.card:hover{
+  border-color:rgba(255,41,77,.45);
+  transform:translateY(-2px);
+}
+
+/* Buttons */
+button,
+.btn,
+.view-event-btn,
+.queue-btn{
+  background:var(--vcc-red);
+  color:#fff;
+  border:0;
+  border-radius:13px;
+  padding:13px 18px;
+  font-weight:900;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  cursor:pointer;
+  box-shadow:0 14px 30px rgba(255,41,77,.22);
+}
+
+button:hover,
+.btn:hover,
+.view-event-btn:hover,
+.queue-btn:hover{
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+}
+
+.btn.secondary,
+button.secondary,
+.queue-btn.secondary{
+  background:#202027;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:none;
+}
+
+.discord-btn,
+.discord-nav{
+  background:var(--vcc-blue)!important;
+}
+
+/* Forms */
+input,
+select,
+textarea{
+  width:100%;
+  background:#050507;
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  border-radius:14px;
+  padding:14px 15px;
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:rgba(245,197,66,.65);
+  box-shadow:0 0 0 4px rgba(245,197,66,.08);
+}
+
+input::placeholder,
+textarea::placeholder{
+  color:#8d93a3;
+}
+
+/* Tags */
+.tag,
+.status-pill,
+.team-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(245,197,66,.11);
+  border:1px solid rgba(245,197,66,.36);
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+}
+
+/* Tables / lists */
+.match-list,
+.tournament-list,
+.players-list{
+  display:grid;
+  gap:18px;
+  margin-top:28px;
+}
+
+.match-card,
+.tournament-card{
+  padding:24px 26px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.match-card h3,
+.tournament-card h3{
+  color:var(--vcc-red);
+  font-size:24px;
+  margin:13px 0 12px;
+}
+
+.match-card p,
+.tournament-card p{
+  color:var(--vcc-muted);
+  margin:8px 0;
+}
+
+/* Profile page polish */
+.wrap .card:first-child{
+  max-width:1040px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.avatar,
+.player-avatar{
+  border-color:rgba(245,197,66,.65)!important;
+  box-shadow:0 18px 38px rgba(0,0,0,.35);
+}
+
+.log{
+  background:#060607!important;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:14px!important;
+  color:#fff;
+}
+
+/* Footer */
+footer{
+  border-top:1px solid rgba(255,255,255,.07);
+  color:var(--vcc-muted);
+  text-align:center;
+  padding:30px;
+}
+
+/* Mobile */
+@media(max-width:950px){
+  .nav-wrap,
+  .professional-nav{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .main-nav{
+    width:100%;
+    justify-content:flex-start;
+  }
+
+  .page,
+  .vcc-page,
+  .wrap{
+    width:min(100% - 24px, 1180px);
+    padding-top:44px;
+  }
+}
+
+@media(max-width:700px){
+  .match-card,
+  .tournament-card{
+    display:block;
+  }
+
+  .view-event-btn{
+    margin-top:16px;
+  }
+
+  .brand img{
+    width:48px;
+    height:48px;
+  }
+
+  .brand strong{
+    font-size:22px;
+  }
+}
