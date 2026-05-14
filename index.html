@@ -6,6 +6,7 @@
   <title>VCC — Valorant Console Circuit</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="vcc-hub.css">
+  <link rel="stylesheet" href="home-auth-modal.css">
   <link rel="icon" type="image/png" href="assets/favicon.png">
 </head>
 
@@ -25,85 +26,26 @@
     </div>
 
     <nav class="hub-nav">
-      <a href="scrims.html">
-        <span class="hub-icon">⚔</span>
-        <div>
-          <strong>Scrims</strong>
-          <small>Find practice matches</small>
-        </div>
-      </a>
-
-      <a href="tournaments.html">
-        <span class="hub-icon">🏆</span>
-        <div>
-          <strong>Tournaments</strong>
-          <small>Qualifiers, majors, playoffs</small>
-        </div>
-      </a>
-
-      <a href="matches.html">
-        <span class="hub-icon">🎮</span>
-        <div>
-          <strong>Matches</strong>
-          <small>Schedules and match rooms</small>
-        </div>
-      </a>
-
-      <a href="leaderboard.html">
-        <span class="hub-icon">📈</span>
-        <div>
-          <strong>Rankings</strong>
-          <small>Pro points and standings</small>
-        </div>
-      </a>
+      <a href="scrims.html"><span class="hub-icon">⚔</span><div><strong>Scrims</strong><small>Find practice matches</small></div></a>
+      <a href="tournaments.html"><span class="hub-icon">🏆</span><div><strong>Tournaments</strong><small>Qualifiers, majors, playoffs</small></div></a>
+      <a href="matches.html"><span class="hub-icon">🎮</span><div><strong>Matches</strong><small>Schedules and match rooms</small></div></a>
+      <a href="leaderboard.html"><span class="hub-icon">📈</span><div><strong>Rankings</strong><small>Pro points and standings</small></div></a>
+      <a href="stats.html"><span class="hub-icon">📊</span><div><strong>Stats</strong><small>Player and team stats</small></div></a>
     </nav>
 
     <div class="hub-section-label">Teams</div>
 
     <nav class="hub-nav">
-      <a href="teams.html">
-        <span class="hub-icon">👥</span>
-        <div>
-          <strong>View Teams</strong>
-          <small>Browse VCC rosters</small>
-        </div>
-      </a>
-
-      <a href="create-team.html">
-        <span class="hub-icon">＋</span>
-        <div>
-          <strong>Create Team</strong>
-          <small>Start a roster</small>
-        </div>
-      </a>
-
-      <a href="manage-team.html">
-        <span class="hub-icon">⚙</span>
-        <div>
-          <strong>Manage Team</strong>
-          <small>Invites and roster control</small>
-        </div>
-      </a>
+      <a href="teams.html"><span class="hub-icon">👥</span><div><strong>View Teams</strong><small>Browse VCC rosters</small></div></a>
+      <a href="create-team.html"><span class="hub-icon">＋</span><div><strong>Create Team</strong><small>Start a roster</small></div></a>
+      <a href="manage-team.html"><span class="hub-icon">⚙</span><div><strong>Manage Team</strong><small>Invites and roster control</small></div></a>
     </nav>
 
     <div class="hub-section-label">Community</div>
 
     <nav class="hub-nav">
-      <a href="players.html">
-        <span class="hub-icon">★</span>
-        <div>
-          <strong>Players</strong>
-          <small>Find competitors</small>
-        </div>
-      </a>
-
-      <a href="https://discord.gg/qCDzKjKZ2v" target="_blank">
-        <span class="hub-icon">💬</span>
-        <div>
-          <strong>SiN Discord</strong>
-          <small>Join the community</small>
-        </div>
-      </a>
+      <a href="players.html"><span class="hub-icon">★</span><div><strong>Players</strong><small>Find competitors</small></div></a>
+      <a href="https://discord.gg/qCDzKjKZ2v" target="_blank"><span class="hub-icon">💬</span><div><strong>SiN Discord</strong><small>Join the community</small></div></a>
     </nav>
   </aside>
 
@@ -139,10 +81,10 @@
         <p>Join qualifiers, preseason league mode, group stages, playoffs, and majors.</p>
       </a>
 
-      <a class="hub-mode-card" href="leaderboard.html">
-        <div class="mode-art blue">★</div>
-        <h3>Rankings</h3>
-        <p>Track records, pro points, standings, and competitive progress.</p>
+      <a class="hub-mode-card" href="stats.html">
+        <div class="mode-art blue">📊</div>
+        <h3>Stats Database</h3>
+        <p>View HLTV-style player stats, team stats, rankings, ACS, K/D, and match history.</p>
       </a>
     </section>
 
@@ -159,22 +101,10 @@
         </p>
 
         <div class="about-grid">
-          <div>
-            <strong>Preseason League</strong>
-            <p>Premier-style weekly matches for seeding and ranking teams.</p>
-          </div>
-          <div>
-            <strong>Pro Point Qualifiers</strong>
-            <p>Teams earn points through placements and consistent results.</p>
-          </div>
-          <div>
-            <strong>Group Stages</strong>
-            <p>Group A/B/C/D pools with teams advancing into playoffs.</p>
-          </div>
-          <div>
-            <strong>Match Rooms</strong>
-            <p>Map bans, server bans, score submissions, and team chat.</p>
-          </div>
+          <div><strong>Preseason League</strong><p>Premier-style weekly matches for seeding and ranking teams.</p></div>
+          <div><strong>Pro Point Qualifiers</strong><p>Teams earn points through placements and consistent results.</p></div>
+          <div><strong>Group Stages</strong><p>Group A/B/C/D pools with teams advancing into playoffs.</p></div>
+          <div><strong>Match Rooms</strong><p>Map bans, server bans, score submissions, and team chat.</p></div>
         </div>
       </article>
 
@@ -196,26 +126,10 @@
   </main>
 
   <aside class="hub-rightbar">
-    <a class="right-icon" href="profile.html" title="Profile">
-      <span>👤</span>
-      <small>Profile</small>
-    </a>
-
-    <a class="right-icon" href="inbox.html" title="Inbox">
-      <span>🔔</span>
-      <small>Inbox</small>
-      <b id="inboxBadge">0</b>
-    </a>
-
-    <a class="right-icon" href="message-player.html" title="Messages">
-      <span>✉</span>
-      <small>Message</small>
-    </a>
-
-    <a class="right-icon" href="admin.html" title="Admin">
-      <span>⚙</span>
-      <small>Admin</small>
-    </a>
+    <a class="right-icon" href="profile.html" title="Profile"><span>👤</span><small>Profile</small></a>
+    <a class="right-icon" href="inbox.html" title="Inbox"><span>🔔</span><small>Inbox</small><b id="inboxBadge">0</b></a>
+    <a class="right-icon" href="message-player.html" title="Messages"><span>✉</span><small>Message</small></a>
+    <a class="right-icon" href="admin.html" title="Admin"><span>⚙</span><small>Admin</small></a>
   </aside>
 
   <script type="module">
@@ -243,5 +157,7 @@
 
     loadInboxCount();
   </script>
+
+  <script type="module" src="home-auth-modal.js"></script>
 </body>
 </html>
