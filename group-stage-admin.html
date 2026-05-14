@@ -1,0 +1,28 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>VCC Group Stage Admin</title><link rel="stylesheet" href="styles.css"><style>
+body{background:#080808;color:#fff;font-family:Arial;margin:0}
+nav{padding:18px;background:#111}
+nav a{color:#fff;margin-right:14px;text-decoration:none}
+.wrap{max-width:1100px;margin:35px auto;padding:20px}
+.card{background:#111;border:1px solid #2d2d2d;border-radius:16px;padding:20px;margin-bottom:18px}
+input,select,textarea{width:100%;box-sizing:border-box;padding:12px;background:#070707;color:#fff;border:1px solid #333;border-radius:10px;margin:7px 0}
+button,.btn{background:#f5c542;color:#000;border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
+.log{background:#070707;border-radius:12px;padding:12px;min-height:120px;max-height:330px;overflow:auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.meta{color:#aaa;font-size:13px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<nav><a href="index.html">Home</a><a href="admin.html">Admin</a><a href="tournaments.html">Tournaments</a><a href="group-stage-admin.html">Group Stage</a></nav>
+<main class="wrap">
+<h1>VCC Group Stage Setup</h1>
+<section class="card"><h2>Create Groups</h2><input id="tournamentId" placeholder="Tournament ID"><input id="groupCount" type="number" value="4" min="1" max="16"><button id="createGroupsBtn">Create Groups</button></section>
+<section class="card"><h2>Assign Teams To Groups</h2><textarea id="teamIds" rows="5" placeholder="team-id-1, team-id-2, team-id-3"></textarea><button id="assignTeamsBtn">Assign Teams</button></section>
+<section class="card"><h2>Generate Group Round Robin Matches</h2><button id="generateMatchesBtn">Generate Group Matches</button></section>
+<section class="card"><h2>Status</h2><div id="log" class="log">Ready.</div></section>
+</main>
+<script src="supabase-config.js"></script><script src="vcc-live.js"></script>
+<script>
+const log=(m)=>document.getElementById("log").textContent=m;
+document.getElementById("createGroupsBtn").onclick=async()=>{try{const tid=document.getElementById("tournamentId").value.trim();const count=Number(document.getElementById("groupCount").value||4);log(JSON.stringify(await VCC.createGroups(tid,count),null,2));}catch(e){log("Error: "+e.message)}};
+document.getElementById("assignTeamsBtn").onclick=async()=>{try{const tid=document.getElementById("tournamentId").value.trim();const count=Number(document.getElementById("groupCount").value||4);const teams=document.getElementById("teamIds").value.split(",").map(x=>x.trim()).filter(Boolean);log(JSON.stringify(await VCC.assignTeamsToGroups(tid,teams,count),null,2));}catch(e){log("Error: "+e.message)}};
+document.getElementById("generateMatchesBtn").onclick=async()=>{try{const tid=document.getElementById("tournamentId").value.trim();log(JSON.stringify(await VCC.generateGroupRoundRobin(tid),null,2));}catch(e){log("Error: "+e.message)}};
+</script></body></html>
