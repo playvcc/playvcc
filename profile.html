@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile — VCC</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<style>
+.profile-picture-wrap {
+  display:flex;
+  align-items:center;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.profile-avatar {
+  width:120px;
+  height:120px;
+  object-fit:cover;
+  border-radius:24px;
+  background:#111827;
+  border:1px solid rgba(255,255,255,.15);
+  padding:4px;
+}
+.avatar-placeholder {
+  width:120px;
+  height:120px;
+  display:grid;
+  place-items:center;
+  border-radius:24px;
+  background:#ff2b3d;
+  color:white;
+  font-size:46px;
+  font-weight:900;
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap professional-nav">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <button class="mobile-menu-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="teams.html">Teams</a>
+      <a href="create-team.html">Create Team</a>
+      <a href="manage-team.html">Manage Team</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="admin.html">Admin</a>
+      <a class="discord-nav" href="https://discord.gg/qCDzKjKZ2v" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+
+
+<main class="page">
+  <h1>Player Profile</h1>
+  <div id="status" class="status">Loading...</div>
+
+  <section class="form">
+    <h2>Update Profile</h2>
+    <p class="small">Profile pictures upload to VCC storage and display publicly on player/team pages.</p>
+
+    <div class="profile-picture-wrap">
+      <img id="avatarPreview" class="profile-avatar" src="" alt="Profile picture preview" style="display:none;">
+      <div id="avatarPlaceholder" class="avatar-placeholder">?</div>
+      <div style="flex:1;min-width:220px">
+        <label>Profile Picture <span class="small">(optional)</span>
+          <input id="avatarFile" type="file" accept="image/png,image/jpeg,image/webp">
+        </label>
+        <p class="small">Upload PNG, JPG, or WEBP. Press Save Profile after selecting image.</p>
+      </div>
+    </div>
+
+    <div class="grid two">
+      <label>Username<input id="username"></label>
+      <label>Riot ID<input id="riotId" placeholder="Name#TAG"></label>
+    </div>
+
+    <div class="grid two">
+      <label>Discord<input id="discord" placeholder="@username"></label>
+      <label>Platform
+        <select id="platform">
+          <option>PlayStation 5</option>
+          <option>Xbox Series X/S</option>
+          <option>Both</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="grid two">
+      <label>Player Role
+        <select id="role">
+          <option>Duelist</option>
+          <option>Controller</option>
+          <option>Initiator</option>
+          <option>Sentinel</option>
+          <option>Flex</option>
+          <option>IGL</option>
+          <option>Flex / IGL</option>
+        </select>
+      </label>
+
+      <label>Free Agent Status
+        <select id="looking">
+          <option value="true">Looking for team</option>
+          <option value="false">Not looking</option>
+        </select>
+      </label>
+    </div>
+
+    <label>Bio<textarea id="bio" rows="3"></textarea></label>
+
+    <button class="btn primary" id="saveBtn" type="button">Save Profile</button>
+  </section>
+
+  <section style="margin-top:20px">
+    <h2>Team History</h2>
+    <div id="history" class="cards"></div>
+  </section>
+</main>
+
+<script type="module">
+import { requireUser, getProfile, upsertProfile, getCurrentMembership, supabase, setStatus } from './app.js'
+
+const user = await requireUser()
+let selectedAvatarFile = null
+let currentAvatarUrl = null
+
+function showAvatar(src, username='?') {
+  if (src) {
+    avatarPreview.src = src
+    avatarPreview.style.display = 'block'
+    avatarPlaceholder.style.display = 'none'
+  } else {
+    avatarPreview.style.display = 'none'
+    avatarPlaceholder.style.display = 'grid'
+    avatarPlaceholder.textContent = (username || 'P')[0].toUpperCase()
+  }
+}
+
+avatarFile.addEventListener('change', (e) => {
+  const file = e.target.files[0]
+  if (!file) return
+
+  if (file.size > 5 * 1024 * 1024) {
+    setStatus('Profile picture must be under 5MB.')
+    avatarFile.value = ''
+    selectedAvatarFile = null
+    return
+  }
+
+  selectedAvatarFile = file
+  showAvatar(URL.createObjectURL(file), username.value)
+  setStatus('Profile picture selected. Press Save Profile to upload it.')
+})
+
+async function ensureProfile() {
+  let p = await getProfile(user.id)
+
+  if (!p) {
+    const fallbackUsername = user.user_metadata?.username || user.email?.split('@')[0] || 'Player'
+    await upsertProfile({
+      id: user.id,
+      username: fallbackUsername,
+      email_private: user.email,
+      looking_for_team: true,
+      avatar_url: null
+    })
+    p = await getProfile(user.id)
+  }
+
+  return p
+}
+
+async function uploadAvatarIfNeeded() {
+  if (!selectedAvatarFile) return currentAvatarUrl
+
+  const ext = selectedAvatarFile.name.split('.').pop()?.toLowerCase() || 'jpg'
+  const filePath = `${user.id}/avatar-${Date.now()}.${ext}`
+
+  setStatus('Uploading profile picture...')
+
+  const { error: uploadError } = await supabase.storage
+    .from('profile-pictures')
+    .upload(filePath, selectedAvatarFile, {
+      cacheControl: '3600',
+      upsert: true
+    })
+
+  if (uploadError) throw uploadError
+
+  const { data } = supabase.storage
+    .from('profile-pictures')
+    .getPublicUrl(filePath)
+
+  selectedAvatarFile = null
+  return data.publicUrl
+}
+
+async function load() {
+  const p = await ensureProfile()
+
+  username.value = p.username || ''
+  riotId.value = p.riot_id || ''
+  discord.value = p.discord || ''
+  platform.value = p.platform || 'PlayStation 5'
+  role.value = p.role || 'Flex'
+  bio.value = p.bio || ''
+  looking.value = String(p.looking_for_team ?? true)
+  currentAvatarUrl = p.avatar_url || null
+
+  showAvatar(currentAvatarUrl, p.username)
+
+  const active = await getCurrentMembership(user.id)
+  setStatus(active ? 'Profile loaded · Active team: ' + active.teams.name : 'Profile loaded · Free agent')
+
+  const { data } = await supabase
+    .from('team_memberships')
+    .select('status,role_on_team,joined_at,left_at,teams(name,division)')
+    .eq('player_id', user.id)
+    .order('joined_at', { ascending:false })
+
+  history.innerHTML = (data || []).length
+    ? data.map(h => `<div class="card"><h3>${h.teams?.name || 'Unknown Team'}</h3><span class="tag">${h.teams?.division || 'Division'}</span><span class="tag">${h.role_on_team || 'Player'}</span><p>Status: ${h.status}</p></div>`).join('')
+    : '<div class="card"><p>No team history yet.</p></div>'
+}
+
+saveBtn.onclick = async () => {
+  try {
+    if (!username.value.trim()) {
+      setStatus('Username is required.')
+      return
+    }
+
+    const avatarUrl = await uploadAvatarIfNeeded()
+
+    setStatus('Saving profile...')
+
+    await upsertProfile({
+      id: user.id,
+      username: username.value.trim(),
+      riot_id: riotId.value.trim(),
+      discord: discord.value.trim(),
+      platform: platform.value,
+      role: role.value,
+      bio: bio.value,
+      looking_for_team: looking.value === 'true',
+      email_private: user.email,
+      avatar_url: avatarUrl
+    })
+
+    currentAvatarUrl = avatarUrl
+    await load()
+    setStatus('Profile saved, including profile picture.')
+  } catch (e) {
+    setStatus(e.message || String(e))
+  }
+}
+
+load()
+</script>
+</body>
+</html>

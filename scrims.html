@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scrim Queue — VCC</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<style>
+.scrim-room {
+  background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 22px;
+  padding: 22px;
+  margin-bottom: 22px;
+}
+.scrim-teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 18px;
+  align-items: center;
+}
+.scrim-team {
+  background: rgba(255,255,255,.04);
+  border-radius: 18px;
+  padding: 18px;
+}
+.scrim-team img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  background: #111827;
+  border-radius: 16px;
+  padding: 8px;
+}
+.ready {
+  color: #22c55e;
+  font-weight: 900;
+}
+.not-ready {
+  color: #ef4444;
+  font-weight: 900;
+}
+.chat-box {
+  max-height: 240px;
+  overflow-y: auto;
+  background: #0b0f19;
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 12px;
+}
+.chat-message {
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  padding: 8px 0;
+}
+@media(max-width: 800px) {
+  .scrim-teams { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap professional-nav">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <button class="mobile-menu-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="teams.html">Teams</a>
+      <a href="create-team.html">Create Team</a>
+      <a href="manage-team.html">Manage Team</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="admin.html">Admin</a>
+      <a class="discord-nav" href="https://discord.gg/qCDzKjKZ2v" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+
+
+<main class="page">
+  <h1>Scrim Finder</h1>
+  <p>Queue your team, get matched against another team, ready up, share lobby details, chat, and report scores.</p>
+
+  <div id="status" class="status">Loading...</div>
+
+  <section class="form">
+    <h2>Join Scrim Queue</h2>
+    <label>Your Team<select id="teamSelect"></select></label>
+    <label>Division Queue
+      <select id="division">
+        <option>VCC Elite</option>
+        <option>VCC Contenders</option>
+        <option>WCC — Women’s Console Circuit</option>
+        <option>Open Scrim</option>
+      </select>
+    </label>
+    <button class="btn primary" id="queueBtn">Find Scrim</button>
+    <button class="btn danger" id="leaveBtn">Leave Queue</button>
+  </section>
+
+  <section style="margin-top:22px">
+    <h2>Your Active Scrim Rooms</h2>
+    <div id="activeMatches"></div>
+
+    <h2>Current Queue</h2>
+    <div id="queueBox" class="cards"></div>
+
+    <h2>Recent Scrim Matches</h2>
+    <div id="matchesBox"></div>
+  </section>
+</main>
+
+<script type="module">
+import { requireUser, supabase, setStatus, subscribeToTable } from './app.js'
+
+const user = await requireUser()
+let myTeams = []
+let lastMatchIds = new Set()
+
+async function loadTeams() {
+  const { data, error } = await supabase
+    .from('teams')
+    .select('id,name,division,tag,logo_url')
+    .eq('captain_id', user.id)
+
+  if (error) {
+    setStatus(error.message)
+    return
+  }
+
+  myTeams = data || []
+
+  teamSelect.innerHTML = myTeams.length
+    ? myTeams.map(t => `<option value="${t.id}">${t.name}</option>`).join('')
+    : '<option value="">No team found</option>'
+}
+
+async function renderQueue() {
+  const { data } = await supabase
+    .from('scrim_queue')
+    .select('id,division,queued_at,teams(name,tag,logo_url)')
+    .eq('status','waiting')
+    .order('queued_at')
+
+  queueBox.innerHTML = (data || []).map(x => `
+    <div class="card">
+      ${x.teams?.logo_url ? `<img src="${x.teams.logo_url}" style="width:70px;height:70px;object-fit:contain;background:#111827;border-radius:14px;padding:8px;">` : ''}
+      <h3>${x.teams?.name || 'Queued Team'}</h3>
+      <span class="tag">${x.division}</span>
+      <p>Waiting since ${new Date(x.queued_at).toLocaleTimeString()}</p>
+    </div>
+  `).join('') || '<div class="card"><p>No teams waiting.</p></div>'
+}
+
+async function getMessages(matchId) {
+  const { data } = await supabase
+    .from('scrim_messages')
+    .select('id,message,created_at,profiles(username)')
+    .eq('match_id', matchId)
+    .order('created_at', { ascending:true })
+
+  return data || []
+}
+
+function teamBlock(team, ready, label) {
+  return `
+    <div class="scrim-team">
+      ${team?.logo_url ? `<img src="${team.logo_url}" alt="${team.name} logo">` : ''}
+      <h3>${team?.name || 'Team'}</h3>
+      <p><span class="tag">${team?.tag || ''}</span></p>
+      <p><strong>Captain:</strong> ${team?.captain?.username || 'Not shown'}</p>
+      <p><strong>Discord:</strong> ${team?.captain?.discord || 'Not set'}</p>
+      <p class="${ready ? 'ready' : 'not-ready'}">${ready ? 'READY' : 'NOT READY'}</p>
+    </div>
+  `
+}
+
+async function loadActiveMatches() {
+  if (!myTeams.length) {
+    activeMatches.innerHTML = '<div class="card"><p>Create a team first to use scrim rooms.</p></div>'
+    return
+  }
+
+  const ids = myTeams.map(t => t.id)
+
+  const { data, error } = await supabase
+    .from('scrim_matches')
+    .select(`
+      id,
+      division,
+      status,
+      created_at,
+      lobby_code,
+      team_a_ready,
+      team_b_ready,
+      team_a_score,
+      team_b_score,
+      team_a:team_a_id(id,name,tag,logo_url,captain:captain_id(username,discord)),
+      team_b:team_b_id(id,name,tag,logo_url,captain:captain_id(username,discord))
+    `)
+    .or(`team_a_id.in.(${ids.join(',')}),team_b_id.in.(${ids.join(',')})`)
+    .in('status', ['matched','ready'])
+
+  if (error) {
+    activeMatches.innerHTML = `<div class="card"><p>${error.message}</p></div>`
+    return
+  }
+
+  const matches = data || []
+
+  for (const m of matches) {
+    if (!lastMatchIds.has(m.id)) {
+      lastMatchIds.add(m.id)
+      if (Notification.permission === 'granted') {
+        new Notification('VCC Scrim Found', { body: `${m.team_a?.name} vs ${m.team_b?.name}` })
+      } else {
+        alert(`VCC Scrim Found: ${m.team_a?.name} vs ${m.team_b?.name}`)
+      }
+    }
+  }
+
+  if (!matches.length) {
+    activeMatches.innerHTML = '<div class="card"><p>No active scrim rooms yet. Queue to find one.</p></div>'
+    return
+  }
+
+  const rendered = []
+  for (const m of matches) {
+    const messages = await getMessages(m.id)
+
+    rendered.push(`
+      <div class="scrim-room">
+        <h2>Scrim Room</h2>
+        <p><span class="tag">${m.division}</span> <span class="tag">${m.status}</span></p>
+
+        <div class="scrim-teams">
+          ${teamBlock(m.team_a, m.team_a_ready, 'A')}
+          <div class="vs">VS</div>
+          ${teamBlock(m.team_b, m.team_b_ready, 'B')}
+        </div>
+
+        <div class="notice">
+          <strong>Lobby Code:</strong> ${m.lobby_code || 'Not set yet'}
+        </div>
+
+        <div class="grid two">
+          <button class="btn primary" data-ready="${m.id}">Ready Up</button>
+          <div>
+            <input id="lobby-${m.id}" placeholder="Lobby code / custom game info">
+            <button class="btn ghost" data-lobby="${m.id}">Update Lobby</button>
+          </div>
+        </div>
+
+        <h3>Scrim Chat</h3>
+        <div class="chat-box" id="chat-${m.id}">
+          ${messages.map(msg => `
+            <div class="chat-message">
+              <strong>${msg.profiles?.username || 'Player'}:</strong> ${msg.message}
+              <br><span class="small">${new Date(msg.created_at).toLocaleTimeString()}</span>
+            </div>
+          `).join('') || '<p>No messages yet.</p>'}
+        </div>
+
+        <div class="grid two">
+          <input id="message-${m.id}" placeholder="Send message to opponent captain/team">
+          <button class="btn ghost" data-message="${m.id}">Send Message</button>
+        </div>
+
+        <h3>Report Score</h3>
+        <div class="grid two">
+          <input id="scoreA-${m.id}" type="number" min="0" placeholder="${m.team_a?.name} score">
+          <input id="scoreB-${m.id}" type="number" min="0" placeholder="${m.team_b?.name} score">
+        </div>
+        <button class="btn primary" data-score="${m.id}">Submit Score</button>
+      </div>
+    `)
+  }
+
+  activeMatches.innerHTML = rendered.join('')
+
+  document.querySelectorAll('[data-ready]').forEach(btn => btn.onclick = async () => {
+    const { error } = await supabase.rpc('set_scrim_ready', { match_id_input: btn.dataset.ready })
+    setStatus(error ? error.message : 'Ready confirmed.')
+    renderAll()
+  })
+
+  document.querySelectorAll('[data-lobby]').forEach(btn => btn.onclick = async () => {
+    const id = btn.dataset.lobby
+    const code = document.getElementById(`lobby-${id}`).value
+    const { error } = await supabase.rpc('update_scrim_lobby', { match_id_input:id, lobby_code_input:code })
+    setStatus(error ? error.message : 'Lobby updated.')
+    renderAll()
+  })
+
+  document.querySelectorAll('[data-message]').forEach(btn => btn.onclick = async () => {
+    const id = btn.dataset.message
+    const message = document.getElementById(`message-${id}`).value.trim()
+    if (!message) return
+
+    const { error } = await supabase
+      .from('scrim_messages')
+      .insert({ match_id:id, sender_id:user.id, message })
+
+    setStatus(error ? error.message : 'Message sent.')
+    renderAll()
+  })
+
+  document.querySelectorAll('[data-score]').forEach(btn => btn.onclick = async () => {
+    const id = btn.dataset.score
+    const a = Number(document.getElementById(`scoreA-${id}`).value)
+    const b = Number(document.getElementById(`scoreB-${id}`).value)
+
+    const { error } = await supabase.rpc('report_scrim_score', {
+      match_id_input:id,
+      team_a_score_input:a,
+      team_b_score_input:b
+    })
+
+    setStatus(error ? error.message : 'Score reported.')
+    renderAll()
+  })
+}
+
+async function renderRecentMatches() {
+  const { data } = await supabase
+    .from('scrim_matches')
+    .select('id,division,status,created_at,lobby_code,team_a_score,team_b_score,team_a:team_a_id(name,tag,logo_url),team_b:team_b_id(name,tag,logo_url)')
+    .order('created_at', { ascending:false })
+    .limit(10)
+
+  matchesBox.innerHTML = (data || []).map(x => `
+    <div class="scrim-match">
+      <div class="grid two">
+        <div>
+          ${x.team_a?.logo_url ? `<img src="${x.team_a.logo_url}" style="width:70px;height:70px;object-fit:contain;background:#111827;border-radius:14px;padding:8px;">` : ''}
+          <h3>${x.team_a?.name}</h3>
+          <span class="tag">${x.team_a?.tag}</span>
+        </div>
+        <div>
+          ${x.team_b?.logo_url ? `<img src="${x.team_b.logo_url}" style="width:70px;height:70px;object-fit:contain;background:#111827;border-radius:14px;padding:8px;">` : ''}
+          <h3>${x.team_b?.name}</h3>
+          <span class="tag">${x.team_b?.tag}</span>
+        </div>
+      </div>
+      <div class="vs">${x.team_a_score ?? '-'} : ${x.team_b_score ?? '-'}</div>
+      <p>${x.division} · ${x.status} · ${new Date(x.created_at).toLocaleString()}</p>
+    </div>
+  `).join('') || '<div class="card"><p>No scrim matches yet.</p></div>'
+}
+
+async function renderAll() {
+  await loadTeams()
+  await renderQueue()
+  await loadActiveMatches()
+  await renderRecentMatches()
+}
+
+queueBtn.onclick = async () => {
+  if (!teamSelect.value) return setStatus('Create a team first.')
+
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission()
+  }
+
+  const { data, error } = await supabase.rpc('join_scrim_queue', {
+    team_id_input:teamSelect.value,
+    division_input:division.value
+  })
+
+  setStatus(error ? error.message : data)
+  renderAll()
+}
+
+leaveBtn.onclick = async () => {
+  if (!teamSelect.value) return
+
+  const { error } = await supabase
+    .from('scrim_queue')
+    .update({ status:'cancelled' })
+    .eq('team_id', teamSelect.value)
+    .eq('status','waiting')
+
+  setStatus(error ? error.message : 'Left queue.')
+  renderAll()
+}
+
+await renderAll()
+
+subscribeToTable('scrim_queue', renderAll)
+subscribeToTable('scrim_matches', renderAll)
+subscribeToTable('scrim_messages', renderAll)
+
+setInterval(renderAll, 6000)
+</script>
+</body>
+</html>

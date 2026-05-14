@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VCC Rules</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    .rules-wrapper {
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .division-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .division-btn {
+      background: #111827;
+      border: 1px solid #2b3548;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-weight: 700;
+    }
+
+    .division-btn:hover {
+      background: #ef4444;
+    }
+
+    .division-btn.active {
+      background: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .rules-panel {
+      display: none;
+      background: #0b0f19;
+      border: 1px solid #1f2937;
+      border-radius: 18px;
+      padding: 28px;
+      margin-top: 15px;
+    }
+
+    .rules-panel.active {
+      display: block;
+    }
+
+    .rules-panel h2 {
+      color: #ef4444;
+      margin-bottom: 15px;
+      font-size: 32px;
+    }
+
+    .rules-panel h3 {
+      margin-top: 25px;
+      color: white;
+    }
+
+    .rules-panel p,
+    .rules-panel li {
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+
+    .rules-panel ul {
+      padding-left: 20px;
+    }
+
+    .warning-box {
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.35);
+      padding: 18px;
+      border-radius: 14px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+
+<header class="site-header">
+  <div class="nav-wrap professional-nav">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <button class="mobile-menu-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="teams.html">Teams</a>
+      <a href="create-team.html">Create Team</a>
+      <a href="manage-team.html">Manage Team</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="admin.html">Admin</a>
+      <a class="discord-nav" href="https://discord.gg/qCDzKjKZ2v" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+
+
+<main class="rules-wrapper">
+  <h1>VCC Official Rulebook</h1>
+  <p>Select a division below to view the official rules and eligibility requirements.</p>
+
+  <div class="division-buttons">
+    <button class="division-btn active" onclick="showRules('elite', this)">VCC Elite</button>
+    <button class="division-btn" onclick="showRules('contenders', this)">VCC Contenders</button>
+    <button class="division-btn" onclick="showRules('wcc', this)">WCC</button>
+  </div>
+
+  <section id="elite" class="rules-panel active">
+    <h2>VCC Elite Rules</h2>
+
+    <div class="warning-box">
+      <strong>Eligibility:</strong> VCC Elite is intended for high-level console Valorant competitors. Players must be Immortal rank or higher.
+    </div>
+
+    <h3>League Purpose</h3>
+    <p>
+      VCC Elite is the top competitive division in the Valorant Console Circuit.
+      This division is designed for the strongest console teams competing for championships,
+      Pro Points, major event qualification, and recognition as elite console competitors.
+    </p>
+
+    <h3>Player Requirements</h3>
+    <ul>
+      <li>Players must compete on console</li>
+      <li>Players must be Immortal or higher</li>
+      <li>Players must use legal peripherals only</li>
+      <li>Players must be registered on the official roster</li>
+      <li>Players may only play for one active team at a time</li>
+    </ul>
+
+    <h3>Team Requirements</h3>
+    <ul>
+      <li>5 starting players required</li>
+      <li>Up to 2 substitute players allowed</li>
+      <li>Official team name and tag required</li>
+      <li>Team captain required</li>
+      <li>Roster must be approved by VCC staff</li>
+    </ul>
+
+    <h3>Competitive Format</h3>
+    <ul>
+      <li>Weekly Cups</li>
+      <li>Major Events</li>
+      <li>Championship Playoffs</li>
+      <li>BO3 regular matches</li>
+      <li>BO5 Grand Finals</li>
+    </ul>
+
+    <h3>Prohibited</h3>
+    <ul>
+      <li>Cheating</li>
+      <li>XIM / unauthorized adapters</li>
+      <li>Smurfing</li>
+      <li>Account sharing</li>
+      <li>Stream sniping</li>
+      <li>Fake score reporting</li>
+      <li>Toxic harassment</li>
+    </ul>
+  </section>
+
+  <section id="contenders" class="rules-panel">
+    <h2>VCC Contenders Rules</h2>
+
+    <div class="warning-box">
+      <strong>Eligibility:</strong> VCC Contenders is intended for players who are Ascendant and under.
+    </div>
+
+    <h3>League Purpose</h3>
+    <p>
+      VCC Contenders is the official development division of the Valorant Console Circuit.
+      This division is designed for rising players, newer teams, free agents, and organizations
+      looking to compete and eventually qualify into VCC Elite.
+    </p>
+
+    <h3>Player Requirements</h3>
+    <ul>
+      <li>Console only</li>
+      <li>Ascendant rank or lower</li>
+      <li>One active team maximum</li>
+      <li>Must follow all VCC competitive rules</li>
+      <li>Must provide accurate account and roster information</li>
+    </ul>
+
+    <h3>Promotion System</h3>
+    <ul>
+      <li>Top performing teams may receive promotion opportunities</li>
+      <li>Staff may review eligibility and competitive placement</li>
+      <li>Teams dominating Contenders may be moved into Elite</li>
+      <li>Promotion may be based on Pro Points, playoffs, or staff review</li>
+    </ul>
+
+    <h3>Competitive Features</h3>
+    <ul>
+      <li>Open tournaments</li>
+      <li>Scrim queue support</li>
+      <li>Leaderboard rankings</li>
+      <li>Team profiles</li>
+      <li>Free agent recruitment</li>
+    </ul>
+
+    <h3>Prohibited</h3>
+    <ul>
+      <li>Rank manipulation</li>
+      <li>Smurfing to stay in Contenders</li>
+      <li>Cheating or unauthorized adapters</li>
+      <li>Fake score reporting</li>
+      <li>Harassment or toxic behavior</li>
+    </ul>
+  </section>
+
+  <section id="wcc" class="rules-panel">
+    <h2>WCC — Women's Console Circuit</h2>
+
+    <div class="warning-box">
+      <strong>Eligibility:</strong> WCC is intended for women competitors and follows protected-participation standards similar to Valorant Game Changers-style eligibility.
+    </div>
+
+    <h3>League Purpose</h3>
+    <p>
+      WCC exists to support and grow women's competitive console Valorant by creating
+      a dedicated competitive environment, tournaments, showcases, and opportunities
+      for women players and women-led teams.
+    </p>
+
+    <h3>Eligibility & Verification</h3>
+    <ul>
+      <li>Players must meet WCC eligibility requirements</li>
+      <li>WCC is limited to women competitors who fall under Valorant VCT/Game Changers-style participation terms</li>
+      <li>Staff may request verification if eligibility concerns arise</li>
+      <li>Fraudulent participation may result in removal or bans</li>
+      <li>All eligibility reviews are handled privately and respectfully</li>
+    </ul>
+
+    <h3>Competition Rules</h3>
+    <ul>
+      <li>Console only competition</li>
+      <li>5 player starting roster</li>
+      <li>Up to 2 substitutes</li>
+      <li>BO3 regular matches</li>
+      <li>BO5 Finals</li>
+      <li>One active team maximum</li>
+    </ul>
+
+    <h3>Prohibited</h3>
+    <ul>
+      <li>Cheating</li>
+      <li>Harassment</li>
+      <li>Fake registration information</li>
+      <li>Competitive manipulation</li>
+      <li>Toxic or discriminatory behavior</li>
+      <li>Unauthorized adapters</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+function showRules(id, button) {
+  document.querySelectorAll('.rules-panel').forEach(panel => {
+    panel.classList.remove('active')
+  })
+
+  document.querySelectorAll('.division-btn').forEach(btn => {
+    btn.classList.remove('active')
+  })
+
+  document.getElementById(id).classList.add('active')
+  button.classList.add('active')
+}
+</script>
+
+</body>
+</html>

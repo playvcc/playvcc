@@ -1,0 +1,9 @@
+PROFILE PICTURE SAVE FIX
+
+This version fixes profile picture saving.
+
+IMPORTANT:
+Run supabase-update-safe.sql once in Supabase.
+It adds avatar_url to profiles without deleting teams/profiles.
+
+Then upload these website files to GitHub Pages root.
