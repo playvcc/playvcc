@@ -1,0 +1,8 @@
+
+In scrims.html, add this line directly AFTER the vcc-queue.js script:
+
+<script src="vcc-queue-alert.js"></script>
+
+Example:
+<script src="vcc-queue.js"></script>
+<script src="vcc-queue-alert.js"></script>

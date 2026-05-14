@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VCC Account — Login / Sign Up</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<style>
+.auth-hero{max-width:1220px;margin:auto;padding:52px 22px;display:grid;grid-template-columns:.92fr 1.08fr;gap:28px;align-items:stretch}
+.auth-info{background:radial-gradient(circle at top left,rgba(255,43,61,.22),transparent 34%),linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.1);border-radius:26px;padding:34px;min-height:560px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}
+.auth-info:after{content:"VCC";position:absolute;right:-20px;bottom:-30px;font-size:150px;font-weight:900;color:rgba(255,255,255,.035);letter-spacing:-8px}
+.auth-panel{background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.11);border-radius:26px;padding:28px;box-shadow:0 18px 60px rgba(0,0,0,.35)}
+.auth-tabs{display:flex;gap:10px;margin-bottom:18px;background:rgba(255,255,255,.04);padding:6px;border-radius:16px}
+.auth-tab{flex:1;border:0;border-radius:12px;padding:12px 14px;background:transparent;color:#d9d9df;font-weight:900;cursor:pointer}
+.auth-tab.active{background:#ff2b3d;color:white;box-shadow:0 0 18px rgba(255,43,61,.25)}
+.auth-section{display:none}.auth-section.active{display:block}
+.auth-status{padding:14px 16px;border-radius:16px;background:#101016;border:1px solid rgba(255,255,255,.08);margin-bottom:18px;color:#e9e9ee}
+.auth-status.success{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35)}
+.auth-status.error{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35)}
+.auth-benefits{display:grid;gap:12px;margin-top:20px}.auth-benefits div{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px}
+@media(max-width:950px){.auth-hero{grid-template-columns:1fr;padding-top:28px}.auth-info{min-height:auto}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap professional-nav">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <button class="mobile-menu-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="teams.html">Teams</a>
+      <a href="create-team.html">Create Team</a>
+      <a href="manage-team.html">Manage Team</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="admin.html">Admin</a>
+      <a class="discord-nav" href="https://discord.gg/qCDzKjKZ2v" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+
+<main class="auth-hero">
+<section class="auth-info">
+<div>
+<p class="eyebrow">Organized by SiN — Strength in Numbers</p>
+<h1>Join the Valorant Console Circuit</h1>
+<p class="lead">Create your VCC account to build your player profile, join teams, manage rosters, find scrims, and compete across VCC Elite, VCC Contenders, and WCC.</p>
+</div>
+<div class="auth-benefits">
+<div><strong>Player Profiles</strong><br><span class="small">Show your username, role, Riot ID, platform, avatar, and free agent status.</span></div>
+<div><strong>Team System</strong><br><span class="small">Captains can create teams, invite players, and manage main/sub rosters.</span></div>
+<div><strong>Scrim Finder</strong><br><span class="small">Queue into scrims, ready up, chat, share lobby info, and report scores.</span></div>
+</div>
+</section>
+
+<section class="auth-panel">
+<div id="status" class="auth-status">Backend connected. Create an account or log in.</div>
+<div class="auth-tabs">
+<button class="auth-tab active" id="signupTab" type="button">Sign Up</button>
+<button class="auth-tab" id="loginTab" type="button">Login</button>
+</div>
+
+<div id="signupSection" class="auth-section active">
+<h2>Create Account</h2>
+<p class="small">Emails stay private. Public pages only show your username and profile information.</p>
+<label>Email <span class="small">(private)</span><input id="signupEmail" type="email" autocomplete="email" placeholder="you@example.com"></label>
+<label>Username <span class="small">(public)</span><input id="signupUsername" autocomplete="username" placeholder="Trozii"></label>
+<label>Password<input id="signupPassword" type="password" autocomplete="new-password" placeholder="Minimum 6 characters"></label>
+<p class="small">Use at least 6 characters.</p>
+<button class="btn primary" id="signup" type="button">Create VCC Account</button>
+</div>
+
+<div id="loginSection" class="auth-section">
+<h2>Welcome Back</h2>
+<p class="small">Log in to update your profile, manage your team, and use scrim tools.</p>
+<label>Email<input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com"></label>
+<label>Password<input id="loginPassword" type="password" autocomplete="current-password"></label>
+<button class="btn primary" id="login" type="button">Login</button>
+<button class="btn ghost" id="logout" type="button">Logout</button>
+</div>
+</section>
+</main>
+
+<script type="module">
+import { supabase } from './app.js'
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase-config.js'
+
+const statusBox = document.getElementById('status')
+function setAuthStatus(message, type = '') {
+  statusBox.textContent = message
+  statusBox.className = 'auth-status ' + type
+}
+function configMissing() {
+  return !SUPABASE_URL || !SUPABASE_ANON_KEY || SUPABASE_URL.includes('PASTE_') || SUPABASE_ANON_KEY.includes('PASTE_')
+}
+function showSection(section) {
+  const signupActive = section === 'signup'
+  signupSection.classList.toggle('active', signupActive)
+  loginSection.classList.toggle('active', !signupActive)
+  signupTab.classList.toggle('active', signupActive)
+  loginTab.classList.toggle('active', !signupActive)
+}
+signupTab.onclick = () => showSection('signup')
+loginTab.onclick = () => showSection('login')
+
+if (location.protocol === 'file:') setAuthStatus('Upload to GitHub Pages/Netlify before testing. Local preview can block backend scripts.', 'error')
+else if (configMissing()) setAuthStatus('Supabase config missing. Check supabase-config.js.', 'error')
+else setAuthStatus('Backend connected. Create an account or log in.')
+
+signup.onclick = async () => {
+  try {
+    if (configMissing()) return setAuthStatus('Supabase config missing. Check supabase-config.js.', 'error')
+    const email = signupEmail.value.trim().toLowerCase()
+    const password = signupPassword.value
+    const username = signupUsername.value.trim()
+    if (!email || !password || !username) return setAuthStatus('Email, username, and password are required.', 'error')
+    if (password.length < 6) return setAuthStatus('Password must be at least 6 characters.', 'error')
+
+    signup.disabled = true
+    signup.textContent = 'Creating account...'
+    setAuthStatus('Creating your VCC account...')
+
+    const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { username } } })
+    if (error) {
+      if (error.message.toLowerCase().includes('rate limit')) setAuthStatus('Signup email rate limit hit. Try again in a few minutes or ask an admin to adjust Supabase Auth rate limits.', 'error')
+      else setAuthStatus(error.message, 'error')
+      return
+    }
+
+    if (data.user) {
+      await supabase.from('profiles').upsert({ id:data.user.id, username, email_private:email, looking_for_team:true })
+    }
+
+    signupEmail.value = ''
+    signupUsername.value = ''
+    signupPassword.value = ''
+    sessionStorage.setItem('vccSignupCreated', 'true')
+    location.reload()
+  } catch (e) {
+    setAuthStatus(e.message || String(e), 'error')
+  } finally {
+    signup.disabled = false
+    signup.textContent = 'Create VCC Account'
+  }
+}
+
+login.onclick = async () => {
+  try {
+    const email = loginEmail.value.trim().toLowerCase()
+    const password = loginPassword.value
+    if (!email || !password) return setAuthStatus('Email and password are required.', 'error')
+    login.disabled = true
+    login.textContent = 'Logging in...'
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) return setAuthStatus(error.message, 'error')
+    location.href = 'profile.html'
+  } catch (e) {
+    setAuthStatus(e.message || String(e), 'error')
+  } finally {
+    login.disabled = false
+    login.textContent = 'Login'
+  }
+}
+logout.onclick = async () => {
+  await supabase.auth.signOut()
+  setAuthStatus('Logged out.', 'success')
+}
+if (sessionStorage.getItem('vccSignupCreated') === 'true') {
+  sessionStorage.removeItem('vccSignupCreated')
+  setAuthStatus('Account created successfully. You can now log in and finish your profile.', 'success')
+  showSection('login')
+}
+</script>
+</body>
+</html>

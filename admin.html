@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>VCC Admin</title><link rel="stylesheet" href="styles.css">
+<style>
+body{background:#080808;color:#fff;font-family:Arial;margin:0}
+nav{padding:18px;background:#111}
+nav a{color:#fff;margin-right:14px;text-decoration:none}
+.wrap{max-width:1100px;margin:35px auto;padding:20px}
+.card{background:#111;border:1px solid #2d2d2d;border-radius:16px;padding:20px;margin-bottom:18px}
+input,select,textarea{width:100%;box-sizing:border-box;padding:12px;background:#070707;color:#fff;border:1px solid #333;border-radius:10px;margin:7px 0}
+button,.btn{background:#f5c542;color:#000;border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;margin-top:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.log{background:#070707;border-radius:12px;padding:12px;min-height:110px;white-space:pre-wrap}
+.meta{color:#aaa;font-size:13px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><a href="index.html">Home</a><a href="admin.html">Admin</a><a href="tournaments.html">Tournaments</a><a href="matches.html">Matches</a><a href="inbox.html">Inbox</a></nav>
+<main class="wrap">
+<h1>VCC Admin Dashboard</h1>
+<section class="card">
+<h2>Create Tournament</h2>
+<input id="tName" placeholder="Tournament Name">
+<textarea id="tDesc" placeholder="Description"></textarea>
+<select id="tCategory">
+<option value="Preseason League">Preseason League</option>
+<option value="Pro Point Qualifier">Pro Point Qualifier</option>
+<option value="Major">Major</option>
+<option value="Championship Finals">Championship Finals</option>
+<option value="Group Stage">Group Stage</option>
+<option value="Group Stage + Playoffs">Group Stage + Playoffs</option>
+<option value="Academy">Academy</option>
+</select>
+<select id="tFormat">
+<option value="Single Elimination">Single Elimination</option>
+<option value="Double Elimination">Double Elimination</option>
+<option value="Premier Style League">Premier Style League</option>
+<option value="Group Stage">Group Stage</option>
+<option value="Group Stage + Playoffs">Group Stage + Playoffs</option>
+<option value="Round Robin">Round Robin</option>
+</select>
+<input id="tStart" type="datetime-local">
+<input id="tRosterLock" type="datetime-local">
+<div id="groupOptions" class="card">
+<h3>Group Stage Settings</h3>
+<input id="groupCount" type="number" min="1" max="16" value="4" placeholder="Number of groups">
+<input id="teamsPerGroup" type="number" min="2" max="16" value="4" placeholder="Teams per group">
+<input id="advancePerGroup" type="number" min="1" max="8" value="2" placeholder="Advance per group">
+</div>
+<button id="createTournamentBtn">Create Tournament</button>
+<div id="createStatus" class="log">Ready.</div>
+</section>
+<section class="card">
+<h2>Group Stage Tools</h2>
+<input id="groupTournamentId" placeholder="Tournament ID">
+<textarea id="teamIds" rows="5" placeholder="Team UUIDs separated by commas"></textarea>
+<input id="toolGroupCount" type="number" min="1" max="16" value="4">
+<button id="createGroupsBtn">Create Groups</button>
+<button id="assignTeamsBtn">Assign Teams Into Groups</button>
+<button id="generateGroupMatchesBtn">Generate Group Stage Matches</button>
+<div id="groupStatus" class="log">Ready.</div>
+</section>
+</main>
+<script src="supabase-config.js"></script><script src="vcc-live.js"></script>
+<script>
+const tCategory=document.getElementById("tCategory");
+const tFormat=document.getElementById("tFormat");
+const groupOptions=document.getElementById("groupOptions");
+function updateGroupVisibility(){
+  const value=tCategory.value+" "+tFormat.value;
+  groupOptions.style.display=value.includes("Group") ? "block" : "none";
+}
+tCategory.addEventListener("change",updateGroupVisibility);
+tFormat.addEventListener("change",updateGroupVisibility);
+updateGroupVisibility();
+
+document.getElementById("createTournamentBtn").addEventListener("click", async function(){
+  const status=document.getElementById("createStatus");
+  try{
+    const tourney=await VCCLive.createTournament({
+      name:document.getElementById("tName").value.trim(),
+      description:document.getElementById("tDesc").value.trim(),
+      tournament_category:document.getElementById("tCategory").value,
+      format:document.getElementById("tFormat").value,
+      status:"upcoming",
+      start_date:document.getElementById("tStart").value || null,
+      roster_lock_at:document.getElementById("tRosterLock").value || null,
+      group_count:document.getElementById("groupCount").value,
+      teams_per_group:document.getElementById("teamsPerGroup").value,
+      advance_per_group:document.getElementById("advancePerGroup").value
+    });
+    status.textContent="Tournament created. ID:\n"+tourney.id;
+    document.getElementById("groupTournamentId").value=tourney.id;
+  }catch(err){ status.textContent="Error: "+err.message; }
+});
+
+document.getElementById("createGroupsBtn").addEventListener("click", async function(){
+  const status=document.getElementById("groupStatus");
+  try{ status.textContent=JSON.stringify(await VCCLive.createGroups(document.getElementById("groupTournamentId").value.trim(), Number(document.getElementById("toolGroupCount").value || 4)), null, 2); }
+  catch(err){ status.textContent="Error: "+err.message; }
+});
+document.getElementById("assignTeamsBtn").addEventListener("click", async function(){
+  const status=document.getElementById("groupStatus");
+  try{
+    const ids=document.getElementById("teamIds").value.split(",").map(x=>x.trim()).filter(Boolean);
+    status.textContent=JSON.stringify(await VCCLive.assignTeamsToGroups(document.getElementById("groupTournamentId").value.trim(), ids, Number(document.getElementById("toolGroupCount").value || 4)), null, 2);
+  }catch(err){ status.textContent="Error: "+err.message; }
+});
+document.getElementById("generateGroupMatchesBtn").addEventListener("click", async function(){
+  const status=document.getElementById("groupStatus");
+  try{ status.textContent=JSON.stringify(await VCCLive.generateGroupMatches(document.getElementById("groupTournamentId").value.trim()), null, 2); }
+  catch(err){ status.textContent="Error: "+err.message; }
+});
+</script>
+</body></html>

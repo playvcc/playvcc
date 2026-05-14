@@ -1,0 +1,47 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>VCC Manage Team</title><link rel="stylesheet" href="styles.css">
+<style>
+body{background:#080808;color:#fff;font-family:Arial;margin:0}
+nav{padding:18px;background:#111}
+nav a{color:#fff;margin-right:14px;text-decoration:none}
+.wrap{max-width:1100px;margin:35px auto;padding:20px}
+.card{background:#111;border:1px solid #2d2d2d;border-radius:16px;padding:20px;margin-bottom:18px}
+input,select,textarea{width:100%;box-sizing:border-box;padding:12px;background:#070707;color:#fff;border:1px solid #333;border-radius:10px;margin:7px 0}
+button,.btn{background:#f5c542;color:#000;border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;margin-top:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.log{background:#070707;border-radius:12px;padding:12px;min-height:110px;white-space:pre-wrap}
+.meta{color:#aaa;font-size:13px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><a href="index.html">Home</a><a href="create-team.html">Create Team</a><a href="manage-team.html">Manage Team</a><a href="inbox.html">Inbox</a></nav>
+<main class="wrap">
+<h1>Manage Team</h1>
+<section class="card">
+<h2>Invite Player To Team</h2>
+<p class="meta">This sends an invite into the player's VCC inbox/message system.</p>
+<input id="teamId" placeholder="Your Team ID">
+<input id="inviteEmail" placeholder="Player Email">
+<input id="inviteRiot" placeholder="Player Riot ID optional">
+<select id="inviteRole"><option value="player">Player</option><option value="substitute">Substitute</option><option value="coach">Coach</option></select>
+<textarea id="inviteMessage" rows="4">You have been invited to join a VCC team.</textarea>
+<button id="sendInviteBtn">Send Invite</button>
+<div id="inviteStatus" class="log">Ready.</div>
+</section>
+</main>
+<script src="supabase-config.js"></script><script src="vcc-live.js"></script>
+<script>
+document.getElementById("sendInviteBtn").addEventListener("click", async function(){
+  const status=document.getElementById("inviteStatus");
+  try{
+    const result=await VCCLive.sendTeamInvite({
+      teamId:document.getElementById("teamId").value.trim(),
+      invitedEmail:document.getElementById("inviteEmail").value.trim(),
+      invitedRiotId:document.getElementById("inviteRiot").value.trim(),
+      role:document.getElementById("inviteRole").value,
+      body:document.getElementById("inviteMessage").value.trim()
+    });
+    status.textContent="Invite sent to player inbox. Message ID:\n"+result.message.id;
+  }catch(err){ status.textContent="Error: "+err.message; }
+});
+</script></body></html>

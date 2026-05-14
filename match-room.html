@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>VCC Match Room</title><link rel="stylesheet" href="styles.css">
+<style>
+body{background:#080808;color:#fff;font-family:Arial;margin:0}
+nav{padding:18px;background:#111}
+nav a{color:#fff;margin-right:14px;text-decoration:none}
+.wrap{max-width:1100px;margin:35px auto;padding:20px}
+.card{background:#111;border:1px solid #2d2d2d;border-radius:16px;padding:20px;margin-bottom:18px}
+input,select,textarea{width:100%;box-sizing:border-box;padding:12px;background:#070707;color:#fff;border:1px solid #333;border-radius:10px;margin:7px 0}
+button,.btn{background:#f5c542;color:#000;border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;margin-top:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.log{background:#070707;border-radius:12px;padding:12px;min-height:110px;white-space:pre-wrap}
+.meta{color:#aaa;font-size:13px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body><nav><a href="index.html">Home</a><a href="matches.html">Matches</a><a href="tournaments.html">Tournaments</a><a href="inbox.html">Inbox</a></nav>
+<main class="wrap"><h1>VCC Match Room</h1><p>Match ID: <span id="matchIdText"></span></p>
+<section class="grid">
+<div class="card"><h2>Submit Score</h2><input id="teamName" placeholder="Your Team Name"><input id="teamId" placeholder="Your Team ID optional"><input id="scoreA" type="number" placeholder="Team A maps won"><input id="scoreB" type="number" placeholder="Team B maps won"><input id="proofUrl" placeholder="Screenshot/proof URL optional"><button id="submitScoreBtn">Submit Score</button><div id="scoreStatus" class="log">Waiting.</div></div>
+<div class="card"><h2>Match Chat</h2><div id="chatLog" class="log">Loading chat...</div><input id="chatName" placeholder="Display Name"><textarea id="chatMessage" rows="3" placeholder="Type message"></textarea><button id="sendChatBtn">Send Message</button></div>
+</section></main>
+<script src="supabase-config.js"></script><script src="vcc-live.js"></script>
+<script>
+const params=new URLSearchParams(location.search);
+const matchId=params.get("match")||params.get("id");
+document.getElementById("matchIdText").textContent=matchId||"Missing match ID";
+function safe(s){return String(s||"").replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+async function loadChat(){
+  if(!matchId)return;
+  const box=document.getElementById("chatLog");
+  try{
+    const messages=await VCCLive.loadMatchChat(matchId);
+    box.innerHTML=messages.length ? messages.map(function(m){return "<div><strong>"+safe(m.username||"Player")+"</strong>: "+safe(m.message)+"<div class='meta'>"+new Date(m.created_at).toLocaleString()+"</div></div>";}).join("") : "No messages yet.";
+    box.scrollTop=box.scrollHeight;
+  }catch(err){ box.textContent="Chat error: "+err.message; }
+}
+document.getElementById("sendChatBtn").addEventListener("click", async function(){
+  const msg=document.getElementById("chatMessage").value.trim();
+  if(!msg||!matchId)return;
+  try{ await VCCLive.sendMatchChat(matchId, document.getElementById("chatName").value.trim()||"Player", msg); document.getElementById("chatMessage").value=""; loadChat(); }
+  catch(err){ alert("Chat failed: "+err.message); }
+});
+document.getElementById("submitScoreBtn").addEventListener("click", async function(){
+  const status=document.getElementById("scoreStatus");
+  try{
+    const result=await VCCLive.submitMatchScore({
+      matchId:matchId,
+      teamId:document.getElementById("teamId").value.trim()||null,
+      teamName:document.getElementById("teamName").value.trim(),
+      scoreA:document.getElementById("scoreA").value,
+      scoreB:document.getElementById("scoreB").value,
+      proofUrl:document.getElementById("proofUrl").value.trim()
+    });
+    status.textContent=result.status==="approved" ? "Scores matched. Result auto-approved." : result.status==="disputed" ? "Scores did not match. Match disputed." : "Score submitted. Waiting for other team.";
+  }catch(err){ status.textContent="Score error: "+err.message; }
+});
+loadChat();
+if(matchId) VCCLive.subscribeMatchChat(matchId, loadChat);
+</script></body></html>

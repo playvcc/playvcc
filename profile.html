@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>VCC Profile</title>
+<link rel="stylesheet" href="styles.css">
+
+<style>
+body{background:#080808;color:#fff;font-family:Arial;margin:0}
+nav{padding:18px;background:#111}
+nav a{color:#fff;margin-right:14px;text-decoration:none}
+.wrap{max-width:1000px;margin:35px auto;padding:20px}
+.card{background:#111;border:1px solid #2d2d2d;border-radius:16px;padding:20px;margin-bottom:18px}
+input,textarea,select{width:100%;box-sizing:border-box;padding:12px;background:#070707;color:#fff;border:1px solid #333;border-radius:10px;margin:7px 0}
+button,.btn{background:#f5c542;color:#000;border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;margin-top:8px}
+.meta{color:#aaa;font-size:13px}
+.log{background:#070707;border-radius:12px;padding:12px;min-height:80px;white-space:pre-wrap}
+</style>
+
+</head>
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="players.html">Players</a>
+<a href="teams.html">Teams</a>
+<a href="inbox.html">Inbox</a>
+</nav>
+
+<main class="wrap">
+<section class="card">
+<h1 id="profileName">VCC Player Profile</h1>
+<p id="profileInfo" class="meta">Player profile</p>
+<a id="messageBtn" class="btn" href="message-player.html">Message Player</a>
+</section>
+
+<section class="card">
+<h2>Profile Details</h2>
+<div id="profileDetails" class="log">Loading profile...</div>
+</section>
+</main>
+
+<script src="supabase-config.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const userId = params.get("user") || params.get("id") || "";
+const email = params.get("email") || "";
+const name = params.get("name") || "VCC Player";
+
+document.getElementById("profileName").textContent = name;
+document.getElementById("profileInfo").textContent = email ? email : (userId ? "User ID: " + userId : "No user selected");
+
+let msgHref = "message-player.html";
+const q = [];
+if(userId) q.push("user=" + encodeURIComponent(userId));
+if(email) q.push("email=" + encodeURIComponent(email));
+if(q.length) msgHref += "?" + q.join("&");
+document.getElementById("messageBtn").href = msgHref;
+
+document.getElementById("profileDetails").textContent =
+  "Name: " + name + "\n" +
+  "Email: " + (email || "Not shown") + "\n" +
+  "User ID: " + (userId || "Not shown");
+</script>
+</body>
+</html>
