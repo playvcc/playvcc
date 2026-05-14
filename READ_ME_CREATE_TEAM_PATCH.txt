@@ -1,1 +1,0 @@
-Replace the included HTML files in your website. This adds Create Team and Manage Team links to the navbar, adds a Start a Team button on the homepage, and includes create-team.html/manage-team.html if they were missing. Hard refresh after uploading.
