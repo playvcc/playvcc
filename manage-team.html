@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Manage Team — VCC</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="vcc-clean-ui.css"><link rel="icon" type="image/png" href="assets/favicon.png"></head>
+<body><header class="site-header"><div class="nav-wrap">
+<a class="brand" href="index.html"><img src="assets/vcc-logo.png"><span><strong>VCC</strong><small>Valorant Console Circuit</small></span></a>
+<nav class="main-nav"><a href="index.html">Home</a><a href="teams.html">Teams</a><a href="create-team.html">Create Team</a><a href="manage-team.html">Manage Team</a><a href="players.html">Players</a><a href="inbox.html">Inbox</a></nav></div></header>
+<main class="wrap"><div class="kicker">Captain Control Panel</div><h1>Manage Team</h1>
+<p class="lead">Only the captain who created the team can access this page. Manage roster roles, remove players, and invite new players.</p>
+<section id="noTeamBox" class="card" style="display:none"><h2>No Captain Team Found</h2><p class="muted">You do not currently own a team on this account.</p><a class="btn" href="create-team.html">Create Team</a></section>
+<section id="teamBox" style="display:none">
+<div class="card"><div class="grid"><div><img id="teamLogo" class="avatar" src="assets/vcc-logo.png"><h2 id="teamName">Team Name</h2><p id="teamInfo" class="muted">Loading...</p></div>
+<div><h3>Invite Player</h3><p class="muted">Send an invite to a player’s VCC inbox by email or user ID.</p>
+<input id="inviteEmail" placeholder="Player email"><input id="inviteUserId" placeholder="Player user ID optional"><input id="inviteRiot" placeholder="Riot ID optional">
+<select id="inviteRole"><option value="player">Player</option><option value="substitute">Substitute</option><option value="coach">Coach</option></select>
+<button id="sendInviteBtn">Send Invite</button></div></div><div id="teamStatus" class="log">Checking captain access...</div></div>
+<div class="card"><h2>Roster</h2><div id="membersBox" class="log">Loading roster...</div></div>
+</section></main><script type="module" src="manage-team.js"></script></body></html>
