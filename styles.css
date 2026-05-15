@@ -124,4 +124,37 @@ button.green,.btn.green{background:var(--green);color:#061206}
   .nav-wrap{flex-direction:column;align-items:flex-start}.main-nav{justify-content:flex-start;width:100%}
 }
 
-AUTH_MODAL_CSS_APPEND.txt
+/* REQUIRED AUTH MODAL CSS */
+.auth-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.78);
+  z-index:99999;
+  display:none;
+  place-items:center;
+  padding:20px;
+  backdrop-filter:blur(8px);
+}
+.auth-modal.show{
+  display:grid;
+}
+.auth-box{
+  width:min(460px,100%);
+  background:#111116;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:22px;
+  padding:24px;
+  box-shadow:0 28px 80px rgba(0,0,0,.55);
+}
+.auth-box input{
+  width:100%;
+  background:#050507;
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  border-radius:14px;
+  padding:14px 15px;
+  margin:7px 0;
+}
+.auth-box button{
+  margin-top:8px;
+}
