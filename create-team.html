@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Team — VCC</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vcc-pro-ui.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="stats.html">Stats</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="admin.html">Admin</a>
+      <a class="discord-nav" href="https://discord.gg/qCDzKjKZ2v" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+<main class="vcc-wrap">
+<div class="kicker">Team Registration</div><h1>Create Team</h1><p class="lead">Create one team per account.</p><section class="vcc-card"><div class="grid"><div><img id="preview" class="vcc-avatar" src="assets/vcc-logo.png"><input id="logoFile" type="file" accept="image/*"></div><div><input id="name" placeholder="Team Name"><input id="tag" placeholder="Team Tag"><textarea id="bio" placeholder="Team Bio"></textarea><button id="create">Create Team</button></div></div><div id="status" class="log">Ready.</div></section>
+</main>
+<script type="module" src="create-team.js"></script>
+</body>
+</html>

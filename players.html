@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VCC Players</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vcc-pro-ui.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="stats.html">Stats</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="admin.html">Admin</a>
+      <a class="discord-nav" href="https://discord.gg/qCDzKjKZ2v" target="_blank">SiN Discord</a>
+    </nav>
+  </div>
+</header>
+
+<main class="vcc-wrap">
+  <div class="kicker">VCC Player Database</div>
+  <h1>Players</h1>
+  <p class="lead">Browse registered console Valorant competitors, view public profiles, and find free agents.</p>
+
+  <section class="vcc-card players-toolbar">
+    <input id="playerSearch" placeholder="Search player, Riot ID, rank, role, platform...">
+    <select id="rankFilter">
+      <option value="">All Ranks</option>
+      <option>Radiant</option>
+      <option>Immortal</option>
+      <option>Ascendant</option>
+      <option>Diamond</option>
+      <option>Platinum</option>
+      <option>Gold</option>
+      <option>Silver</option>
+      <option>Bronze</option>
+    </select>
+    <select id="platformFilter">
+      <option value="">All Platforms</option>
+      <option>PlayStation 5</option>
+      <option>PS5</option>
+      <option>Xbox</option>
+    </select>
+  </section>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title"><h2>Player List</h2><span>Click player to view profile</span></div>
+    <div id="playersBox" class="player-list">
+      <div class="log">Loading players...</div>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="players.js"></script>
+</body>
+</html>
