@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matches — VCC</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vcc-pro-ui.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="stats.html">Stats</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="vcc-wrap">
+  <div class="kicker">VCC Match Rooms</div>
+  <h1>Matches</h1>
+  <p class="lead">Tournament and scrim matches. Only teams playing can enter private match rooms.</p>
+
+  <section class="vcc-card">
+    <div id="matchesStatus" class="log">Loading matches...</div>
+  </section>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title"><h2>Tournament Matches</h2><span>Bracket Rooms</span></div>
+    <div id="tournamentMatchesBox"></div>
+  </section>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title"><h2>Scrim Rooms</h2><span>Practice Rooms</span></div>
+    <div id="scrimRoomsBox"></div>
+  </section>
+</main>
+
+<script src="matches.js"></script>
+<script src="auth-nav.js"></script>
+</body>
+</html>
