@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scrims — VCC</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vcc-pro-ui.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="stats.html">Stats</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="vcc-wrap">
+  <div class="kicker">VCC Scrim Queue</div>
+  <h1>Scrims</h1>
+  <p class="lead">Pick one of your teams, enter the queue, and VCC will create a match room when another team is found.</p>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title">
+      <h2>Enter Queue</h2>
+      <span>Practice Matchmaking</span>
+    </div>
+
+    <div class="grid">
+      <select id="teamSelect">
+        <option value="">Loading your teams...</option>
+      </select>
+
+      <select id="region">
+        <option value="NA">NA</option>
+        <option value="EU">EU</option>
+        <option value="LATAM">LATAM</option>
+      </select>
+
+      <select id="scrimType">
+        <option value="bo1">BO1</option>
+        <option value="bo3">BO3</option>
+      </select>
+
+      <button id="queueBtn">Enter Queue</button>
+    </div>
+
+    <div id="scrimStatus" class="log">Loading scrim page...</div>
+  </section>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title">
+      <h2>Current Queue</h2>
+      <span>Live Teams</span>
+    </div>
+    <div id="queueBox" class="list"><div class="log">Loading queue...</div></div>
+  </section>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title">
+      <h2>Recent Match Rooms</h2>
+      <span>Scrims</span>
+    </div>
+    <div id="roomsBox" class="list"><div class="log">Loading rooms...</div></div>
+  </section>
+</main>
+
+<script src="scrims.js"></script>
+</body>
+</html>

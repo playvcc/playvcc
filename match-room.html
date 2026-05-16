@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Match Room — VCC</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vcc-pro-ui.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="stats.html">Stats</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="vcc-wrap">
+  <div class="kicker">VCC Match Room</div>
+  <h1>Scrim Room</h1>
+  <p class="lead">Use this room for captain chat, match coordination, and score setup.</p>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title">
+      <h2 id="roomTitle">Loading Room...</h2>
+      <span id="roomStatus">open</span>
+    </div>
+
+    <div id="roomInfo" class="log">Loading room information...</div>
+  </section>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title">
+      <h2>Match Chat</h2>
+      <span>Captains / Players</span>
+    </div>
+
+    <div id="chatBox" class="log" style="min-height:280px;max-height:360px;overflow:auto;">Loading chat...</div>
+
+    <div class="grid">
+      <input id="chatInput" placeholder="Type message...">
+      <button id="sendChatBtn">Send</button>
+    </div>
+
+    <div id="chatStatus" class="log">Ready.</div>
+  </section>
+</main>
+
+<script src="match-room.js"></script>
+</body>
+</html>
