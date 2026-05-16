@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Team — VCC</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vcc-pro-ui.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="stats.html">Stats</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </div>
+</header>
+<main class="vcc-wrap">
+  <div class="kicker">Team Control</div>
+  <h1>Manage Team</h1>
+  <p class="lead">Captains can manage regular or WCC teams and invite players.</p>
+
+  <section class="vcc-card">
+    <select id="teamSelect"></select>
+    <input id="inviteEmail" placeholder="Player email">
+    <input id="inviteUserId" placeholder="Player profile/user ID optional">
+    <button id="sendInviteBtn">Send Invite</button>
+    <div id="manageStatus" class="log">Loading your teams...</div>
+  </section>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title"><h2>Roster</h2><span id="teamLabel">Team</span></div>
+    <div id="membersBox"></div>
+  </section>
+</main>
+<script src="manage-team.js"></script>
+</body>
+</html>
