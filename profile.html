@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VCC Player Profile</title>
+  <link rel="stylesheet" href="profile-style.css" />
+  <script defer src="profile-data.js"></script>
+</head>
+<body>
+  <main class="vcc-page">
+    <section class="player-hero">
+      <div class="hero-left">
+        <img id="profileAvatar" class="player-avatar" src="VCC.png" alt="VCC Player Avatar" />
+
+        <div class="hero-info">
+          <div class="eyebrow">VCC PLAYER PROFILE</div>
+          <h1 id="heroTitle">VCC PLAYER</h1>
+
+          <div class="hero-pills">
+            <span>Rank: <strong id="heroRank">Unranked</strong></span>
+            <span>Platform: <strong id="heroPlatform">Console</strong></span>
+            <span>Region: <strong id="heroRegion">NA</strong></span>
+          </div>
+
+          <p id="heroBio">Competitive console Valorant player competing in the VCC ecosystem.</p>
+
+          <div class="hero-actions">
+            <a href="inbox.html" class="gold-btn">MESSAGE PLAYER</a>
+            <a href="inbox.html" class="dark-btn">OPEN INBOX</a>
+            <a href="teams.html" class="dark-btn">VIEW TEAMS</a>
+            <a href="edit-profile.html" class="dark-btn">EDIT PROFILE</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="record-card">
+        <span>OVERALL RECORD</span>
+        <strong id="overallRecord">0-0</strong>
+        <p id="winRate">0% Win Rate</p>
+      </div>
+    </section>
+
+    <section class="profile-grid">
+      <div class="main-column">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>PLAYER STATS</h2>
+            <a href="stats.html">Season Overview</a>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span>WINS</span>
+              <strong id="wins">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>LOSSES</span>
+              <strong id="losses">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>MAPS WON</span>
+              <strong id="mapsWon">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>MAPS LOST</span>
+              <strong id="mapsLost">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>PRO POINTS</span>
+              <strong id="proPoints">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>VCC RATING</span>
+              <strong id="vccRating">1000</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>COMPETITIVE IDENTITY</h2>
+            <a href="edit-profile.html">Profile Details</a>
+          </div>
+
+          <div class="identity-list">
+            <div>
+              <span>Riot ID</span>
+              <strong id="riotDisplay">Not set</strong>
+            </div>
+            <div>
+              <span>Main Role</span>
+              <strong id="roleDisplay">Flex</strong>
+            </div>
+            <div>
+              <span>Main Agents</span>
+              <strong id="agentsDisplay">Not set</strong>
+            </div>
+            <div>
+              <span>Platform</span>
+              <strong id="platformDisplay">Console</strong>
+            </div>
+            <div>
+              <span>Region</span>
+              <strong id="regionDisplay">NA</strong>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="side-column">
+        <section class="panel small-panel">
+          <div class="panel-header">
+            <h2>MESSAGES</h2>
+            <a href="inbox.html">View All</a>
+          </div>
+          <div class="empty-box">No messages yet.</div>
+        </section>
+
+        <section class="panel small-panel">
+          <div class="panel-header">
+            <h2>NOTIFICATIONS</h2>
+            <a href="#">Alerts</a>
+          </div>
+          <div class="notice-box">
+            <strong>Welcome to VCC</strong>
+            <p>Your notifications will appear here.</p>
+          </div>
+        </section>
+
+        <section class="panel small-panel">
+          <div class="panel-header">
+            <h2>QUICK LINKS</h2>
+            <a href="#">Actions</a>
+          </div>
+          <div class="quick-links">
+            <a href="create-team.html">Create Team</a>
+            <a href="manage-team.html">Manage Team</a>
+            <a href="scrims.html">Find Scrim</a>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>

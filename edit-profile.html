@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit VCC Profile</title>
+  <link rel="stylesheet" href="profile-style.css" />
+  <script defer src="profile-data.js"></script>
+</head>
+<body>
+  <main class="vcc-page">
+    <section class="panel edit-panel">
+      <div class="panel-header">
+        <h2>EDIT PROFILE</h2>
+        <a href="profile.html">Back to Profile</a>
+      </div>
+
+      <div class="edit-layout">
+        <div class="upload-box">
+          <img id="editAvatarPreview" class="player-avatar" src="VCC.png" alt="Profile Preview" />
+          <input id="profilePicInput" type="file" accept="image/*" />
+          <button id="uploadProfilePicBtn" class="gold-btn" type="button">UPLOAD PROFILE PICTURE</button>
+          <p id="uploadStatus">Profile loaded.</p>
+        </div>
+
+        <form id="profileForm" class="edit-form">
+          <input id="displayNameInput" placeholder="Display Name" />
+          <input id="riotInput" placeholder="Riot ID" />
+          <input id="rankInput" placeholder="Rank" />
+          <input id="platformInput" placeholder="Platform" />
+          <input id="regionInput" placeholder="Region" />
+          <input id="roleInput" placeholder="Main Role" />
+          <input id="agentsInput" placeholder="Main Agents" />
+          <textarea id="bioInput" placeholder="Profile Bio"></textarea>
+          <button class="gold-btn" type="submit">SAVE PROFILE</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
