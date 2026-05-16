@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VCC Admin Panel</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vcc-pro-ui.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="stats.html">Stats</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="vcc-wrap">
+  <div class="kicker">Secure Admin</div>
+  <h1>Admin Panel</h1>
+  <p class="lead">Create tournaments and manage VCC operations.</p>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title">
+      <h2>Create Tournament</h2>
+      <span>Admin Tool</span>
+    </div>
+
+    <div class="grid">
+      <input id="tName" value="VCC Open Qualifier" placeholder="Tournament Name">
+
+      <select id="tStatus">
+        <option value="open">Registration Open</option>
+        <option value="upcoming">Upcoming</option>
+        <option value="active">Active</option>
+        <option value="completed">Completed</option>
+      </select>
+
+      <select id="tCategory">
+        <option value="Open Qualifier">Open Qualifier</option>
+        <option value="Preseason League">Preseason League</option>
+        <option value="Elite Division">Elite Division</option>
+        <option value="Contender Division">Contender Division</option>
+        <option value="Academy Division">Academy Division</option>
+        <option value="WCC / Women's Console Circuit">WCC / Women's Console Circuit</option>
+      </select>
+
+      <select id="tFormat">
+        <option value="Group Stage + Playoffs">Group Stage + Playoffs</option>
+        <option value="Premier Style League">Premier Style League</option>
+        <option value="Group Stage">Group Stage</option>
+        <option value="Single Elimination">Single Elimination</option>
+        <option value="Double Elimination">Double Elimination</option>
+      </select>
+
+      <select id="tDivision">
+        <option value="open">Open / Regular VCC</option>
+        <option value="elite">Elite</option>
+        <option value="contender">Contender</option>
+        <option value="academy">Academy</option>
+        <option value="wcc">WCC / Women Only</option>
+      </select>
+
+      <select id="tGenderRestriction">
+        <option value="none">No Gender Restriction</option>
+        <option value="female_only">Female Only / WCC</option>
+      </select>
+
+      <input id="tStart" type="datetime-local">
+      <input id="tRosterLock" type="datetime-local">
+
+      <input id="groupCount" type="number" min="0" value="0" placeholder="Group Count">
+      <input id="teamsPerGroup" type="number" min="0" value="0" placeholder="Teams Per Group">
+      <input id="advancePerGroup" type="number" min="0" value="0" placeholder="Advance Per Group">
+    </div>
+
+    <textarea id="tDesc" rows="4" placeholder="Tournament description"></textarea>
+
+    <button id="createTournamentBtn">Create Tournament</button>
+    <button id="refreshTournamentsBtn" class="secondary">Refresh Tournaments</button>
+
+    <div id="adminStatus" class="log">Admin page loaded. Ready.</div>
+  </section>
+
+  <section class="vcc-card">
+    <div class="vcc-panel-title">
+      <h2>Current Tournaments</h2>
+      <span>Database</span>
+    </div>
+    <div id="adminTournamentsBox" class="list">
+      <div class="log">Loading tournaments...</div>
+    </div>
+  </section>
+</main>
+
+<script src="admin-auth.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

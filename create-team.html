@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Team — VCC</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vcc-pro-ui.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="stats.html">Stats</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html">Profile</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="vcc-wrap">
+  <div class="kicker">Team Registration</div>
+  <h1>Create Team</h1>
+  <p class="lead">Create a regular VCC team or, if eligible, a WCC team.</p>
+
+  <section class="vcc-card">
+    <div class="grid">
+      <div>
+        <img id="preview" class="vcc-avatar" src="assets/vcc-logo.png" alt="Team logo preview">
+        <input id="logoFile" type="file" accept="image/*">
+      </div>
+
+      <div>
+        <input id="teamName" placeholder="Team Name">
+        <input id="teamTag" placeholder="Team Tag">
+
+        <select id="teamDivision">
+          <option value="open">Regular VCC Team</option>
+          <option value="wcc">WCC / Women's Console Circuit Team</option>
+        </select>
+
+        <textarea id="teamBio" placeholder="Team Bio"></textarea>
+
+        <button id="createTeamBtn">Create Team</button>
+        <a class="btn secondary" href="profile.html">Complete Profile</a>
+      </div>
+    </div>
+
+    <div id="teamStatus" class="log">Create team page loaded. Ready.</div>
+  </section>
+</main>
+
+<script src="create-team.js"></script>
+</body>
+</html>
