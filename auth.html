@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VCC Account</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vcc-pro-ui.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<style>
+.auth-page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(circle at top left, rgba(255,43,84,.18), transparent 34%),
+    #050506;
+}
+.auth-card{
+  width:min(560px,100%);
+  background:#111216;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,.45);
+}
+.auth-logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
+}
+.auth-logo img{
+  width:58px;
+  height:58px;
+  border-radius:14px;
+  object-fit:cover;
+}
+.auth-logo strong{
+  display:block;
+  font-size:24px;
+}
+.auth-logo small{
+  color:#b7bdc9;
+}
+.auth-tabs{
+  display:flex;
+  gap:10px;
+  margin:18px 0;
+}
+.auth-tabs button{
+  flex:1;
+}
+.auth-tabs .active{
+  background:#ff2856;
+}
+.auth-card input{
+  width:100%;
+  margin-bottom:12px;
+}
+</style>
+</head>
+<body>
+<main class="auth-page">
+  <section class="auth-card">
+    <a class="auth-logo" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+
+    <div class="kicker">VCC Account</div>
+    <h1 id="authHeading">Sign In</h1>
+    <p class="lead">Sign in or create your VCC account.</p>
+
+    <div class="auth-tabs">
+      <button id="tabLogin" type="button">Sign In</button>
+      <button id="tabSignup" type="button" class="secondary">Create Account</button>
+    </div>
+
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button id="submitBtn" type="button">Sign In</button>
+    <a class="btn secondary" href="index.html">Back Home</a>
+
+    <div id="status" class="log">Ready.</div>
+  </section>
+</main>
+
+<script type="module" src="auth.js"></script>
+</body>
+</html>
