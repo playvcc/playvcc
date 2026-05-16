@@ -123,8 +123,30 @@
         <button id="submitScrimScoreBtn">Submit Score</button>
       </div>
       <div id="scrimScoreStatus" class="log">Captains submit scores here.</div>
-    </div>
-  </section>
+    </div><section class="vcc-card">
+  <div class="vcc-panel-title">
+    <h2>MATCH CHAT</h2>
+    <span>Realtime</span>
+  </div>
+
+  <div id="chatMessages" class="chat-messages"></div>
+
+  <div class="chat-controls">
+    <input
+      id="chatInput"
+      type="text"
+      placeholder="Type message..."
+    >
+
+    <button id="sendChatBtn" class="gold">
+      Send
+    </button>
+  </div>
+
+  <div id="matchRoomStatus" class="log">
+    Connecting...
+  </div>
+</section>
 </main>
 
 <script src="match-room.js"></script>
