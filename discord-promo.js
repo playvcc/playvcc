@@ -3,7 +3,7 @@
 // <script src="discord-promo.js"></script>
 
 // CHANGE THIS to your real SiN Discord invite link.
-const VCC_DISCORD_INVITE = 'PASTE_YOUR_SIN_DISCORD_INVITE_LINK_HERE';
+const VCC_DISCORD_INVITE = 'https://discord.gg/dxa5SJX5vg';
 
 (function(){
   function inviteReady(){
