@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VCC | Player Profile</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="profile-data.js"></script>
+</head>
+<body>
+  <header class="vcc-header">
+    <div class="brand">
+      <img src="assets/vcc-logo.png" onerror="this.src='VCC.png'" alt="VCC Logo" class="brand-logo" />
+      <div>
+        <h1>VCC</h1>
+        <p>Valorant Console Circuit</p>
+      </div>
+    </div>
+
+    <nav class="top-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="stats.html">Stats</a>
+      <a href="teams.html">Teams</a>
+      <a href="players.html">Players</a>
+      <a href="scrims.html">Scrims</a>
+      <a href="rules.html">Rules</a>
+      <a href="profile.html" class="active">Profile</a>
+      <a href="inbox.html">Inbox</a>
+      <button id="signOutBtn" class="sign-out">Sign Out</button>
+    </nav>
+  </header>
+
+  <main class="profile-page">
+    <section class="hero-card">
+      <div class="hero-bg-name" id="heroName">TROZII</div>
+
+      <div class="profile-main">
+        <div class="profile-left">
+          <img id="profileAvatar" class="profile-avatar" src="assets/default-avatar.png" onerror="this.src='VCC.png'" alt="Profile Picture" />
+          <h2 id="displayName">Trozii</h2>
+          <p id="displayRiotId">SiN Trozii#NA2</p>
+          <a class="edit-profile-btn" href="edit-profile.html">Edit Profile</a>
+        </div>
+
+        <div class="profile-right">
+          <div class="profile-field">
+            <span>Rank</span>
+            <strong id="displayRank">Not set</strong>
+          </div>
+          <div class="profile-field">
+            <span>Platform</span>
+            <strong id="displayPlatform">PS5</strong>
+          </div>
+          <div class="profile-field">
+            <span>Region</span>
+            <strong id="displayRegion">Central</strong>
+          </div>
+          <div class="profile-field">
+            <span>Main Role</span>
+            <strong id="displayRole">Flex / IGL</strong>
+          </div>
+          <div class="profile-field">
+            <span>Main Agents</span>
+            <strong id="displayAgents">Yoru, Viper, Omen, KJ, Vyse, Sova, Skye</strong>
+          </div>
+          <div class="profile-field">
+            <span>Gender</span>
+            <strong id="displayGender">Male</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="left-column">
+        <section class="panel">
+          <div class="panel-title">
+            <h3>PLAYER STATS</h3>
+            <a href="stats.html">Season Overview</a>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card"><span>Wins</span><strong id="statWins">0</strong></div>
+            <div class="stat-card"><span>Losses</span><strong id="statLosses">0</strong></div>
+            <div class="stat-card"><span>Maps Won</span><strong id="statMapsWon">0</strong></div>
+            <div class="stat-card"><span>Maps Lost</span><strong id="statMapsLost">0</strong></div>
+            <div class="stat-card"><span>Pro Points</span><strong id="statProPoints">0</strong></div>
+            <div class="stat-card"><span>VCC Rating</span><strong id="statRating">1000</strong></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h3>COMPETITIVE IDENTITY</h3>
+            <a href="edit-profile.html">Profile Details</a>
+          </div>
+
+          <div class="identity-list">
+            <div><span>Riot ID</span><strong id="identityRiotId">SiN Trozii#NA2</strong></div>
+            <div><span>Main Role</span><strong id="identityRole">Flex / IGL</strong></div>
+            <div><span>Main Agents</span><strong id="identityAgents">Yoru, Viper, Omen, KJ, Vyse, Sova, Skye</strong></div>
+            <div><span>Bio</span><strong id="identityBio">Not set</strong></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h3>RECENT MATCHES</h3>
+            <a href="matches.html">View Matches</a>
+          </div>
+          <div class="empty-box">No recent matches yet.</div>
+        </section>
+      </div>
+
+      <aside class="right-column">
+        <section class="panel small-panel">
+          <div class="panel-title">
+            <h3>MESSAGES</h3>
+            <a href="inbox.html">View All</a>
+          </div>
+          <div class="empty-box">No messages yet.</div>
+        </section>
+
+        <section class="panel small-panel">
+          <div class="panel-title">
+            <h3>NOTIFICATIONS</h3>
+            <a href="notifications.html">Alerts</a>
+          </div>
+          <div class="notice-box">
+            <strong>Welcome to VCC</strong>
+            <p>Your notifications will appear here.</p>
+          </div>
+        </section>
+
+        <section class="panel small-panel">
+          <div class="panel-title">
+            <h3>QUICK LINKS</h3>
+            <a href="#">Actions</a>
+          </div>
+          <div class="quick-links">
+            <a href="create-team.html">Create Team</a>
+            <a href="manage-team.html">Manage Team</a>
+            <a href="scrims.html">Find Scrim</a>
+            <a href="tournaments.html">Join Tournament</a>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>
