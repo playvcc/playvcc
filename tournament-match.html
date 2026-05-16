@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VCC Tournament Match Room</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vcc-pro-ui.css">
+<link rel="stylesheet" href="matchroom-faceit.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/vcc-logo.png" alt="VCC logo">
+      <span><strong>VCC</strong><small>Valorant Console Circuit</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="tournaments.html">Tournaments</a>
+      <a href="matches.html">Matches</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </div>
+</header>
+
+<div class="match-tabs">
+  <span>VCC Tournament</span>
+  <span class="active">Overview</span>
+  <span>Scoreboard</span>
+</div>
+
+<main class="matchroom-shell">
+  <section class="score-hero">
+    <div class="team-side">
+      <img id="teamALogo" class="team-logo-small" src="assets/vcc-logo.png" alt="Team A">
+      <div>
+        <div id="teamAName" class="team-name-main">Team A</div>
+        <div class="player-sub">Home Team</div>
+      </div>
+    </div>
+
+    <div class="score-center">
+      <div class="score-line">
+        <span id="teamAScoreTop" class="score-left">0</span>
+        <div class="match-meta-center">
+          <div id="matchTypeText">5v5</div>
+          <div id="matchStatus">Loading</div>
+          <div>Best of 1</div>
+        </div>
+        <span id="teamBScoreTop" class="score-right">0</span>
+      </div>
+      <div class="match-status-dot"></div>
+    </div>
+
+    <div class="team-side right">
+      <div>
+        <div id="teamBName" class="team-name-main">Team B</div>
+        <div class="player-sub">Away Team</div>
+      </div>
+      <img id="teamBLogo" class="team-logo-small" src="assets/vcc-logo.png" alt="Team B">
+    </div>
+  </section>
+
+  <section class="room-grid">
+    <div>
+      <h3>Players</h3>
+      <div id="teamARoster" class="roster-list"></div>
+    </div>
+
+    <div class="center-panel">
+      <div class="match-info-card">
+        <div class="match-info-label">Tournament</div>
+        <div id="tournamentText" class="match-info-value">VCC</div>
+      </div>
+      <div class="match-info-card">
+        <div class="match-info-label">Map</div>
+        <div id="mapText" class="match-info-value">Map Veto / TBD</div>
+      </div>
+      <div class="match-info-card">
+        <div class="match-info-label">Match Info</div>
+        <div id="matchInfo" class="match-info-value">Loading match...</div>
+      </div>
+
+      <div class="room-actions">
+        <a class="faceit-action pink" href="#scoreSubmit">SUBMIT SCORE</a>
+        <a class="faceit-action orange" href="matches.html">BACK TO MATCHES</a>
+        <a class="faceit-action dark" href="tournaments.html">TOURNAMENTS</a>
+      </div>
+    </div>
+
+    <div>
+      <h3>Players</h3>
+      <div id="teamBRoster" class="roster-list"></div>
+    </div>
+  </section>
+
+  <section class="matchroom-lower">
+    <div class="vcc-card">
+      <div class="vcc-panel-title">
+        <h2>Match Chat</h2>
+        <span>Players Only</span>
+      </div>
+      <div id="chatBox" class="room-chat-box">Loading chat...</div>
+      <div class="grid">
+        <input id="chatInput" placeholder="Type message...">
+        <button id="sendChatBtn">Send</button>
+      </div>
+      <div id="chatStatus" class="log">Ready.</div>
+    </div>
+
+    <div id="scoreSubmit" class="vcc-card">
+      <div class="vcc-panel-title">
+        <h2>Captain Score Submission</h2>
+        <span>Confirm / Dispute</span>
+      </div>
+      <div class="grid">
+        <input id="teamAScore" type="number" min="0" placeholder="Team A Score">
+        <input id="teamBScore" type="number" min="0" placeholder="Team B Score">
+        <textarea id="scoreNote" rows="3" placeholder="Optional note or proof link"></textarea>
+        <button id="submitScoreBtn">Submit Score</button>
+      </div>
+      <div id="scoreStatus" class="log">Captains submit scores here.</div>
+    </div>
+  </section>
+</main>
+
+<script src="tournament-match.js"></script>
+<script src="auth-nav.js"></script>
+</body>
+</html>

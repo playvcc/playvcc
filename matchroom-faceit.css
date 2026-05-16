@@ -1,0 +1,249 @@
+
+/* VCC FACEIT-style match room UI */
+.matchroom-shell{
+  max-width:1180px;
+  margin:0 auto;
+  padding:28px 18px 80px;
+}
+
+.match-tabs{
+  display:flex;
+  gap:28px;
+  border-top:3px solid #00a6ff;
+  background:#050506;
+  padding:14px 18px;
+  text-transform:uppercase;
+  font-size:12px;
+  letter-spacing:.08em;
+  color:#8d93a1;
+}
+
+.match-tabs span.active{
+  color:#ff5a1f;
+  border-bottom:2px solid #ff5a1f;
+  padding-bottom:10px;
+}
+
+.score-hero{
+  display:grid;
+  grid-template-columns:1fr 260px 1fr;
+  gap:28px;
+  align-items:center;
+  padding:32px 0 22px;
+}
+
+.team-side{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.team-side.right{
+  justify-content:flex-end;
+  text-align:right;
+}
+
+.team-logo-small{
+  width:48px;
+  height:48px;
+  object-fit:cover;
+  border-radius:50%;
+  background:#191a1f;
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.team-name-main{
+  font-size:16px;
+  font-weight:900;
+  color:#fff;
+}
+
+.score-center{
+  text-align:center;
+}
+
+.score-line{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:26px;
+  font-size:42px;
+  font-weight:1000;
+}
+
+.score-left{
+  color:#31d267;
+}
+
+.score-right{
+  color:#cfd3db;
+}
+
+.match-meta-center{
+  color:#fff;
+  font-size:12px;
+  line-height:1.35;
+  text-transform:uppercase;
+}
+
+.match-status-dot{
+  width:8px;
+  height:8px;
+  background:#ff5a1f;
+  margin:12px auto 0;
+}
+
+.room-grid{
+  display:grid;
+  grid-template-columns:1fr 320px 1fr;
+  gap:18px;
+  align-items:start;
+}
+
+.roster-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.player-card{
+  background:#16171b;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;
+  display:grid;
+  grid-template-columns:44px 1fr auto;
+  gap:10px;
+  align-items:center;
+  padding:8px;
+}
+
+.player-card img{
+  width:44px;
+  height:44px;
+  border-radius:8px;
+  object-fit:cover;
+  background:#25262b;
+}
+
+.player-name{
+  font-weight:900;
+  color:#fff;
+}
+
+.player-sub{
+  font-size:12px;
+  color:#aeb4c1;
+}
+
+.player-rating{
+  color:#c8cdd7;
+  font-size:12px;
+}
+
+.player-level{
+  color:#f6b21d;
+  font-weight:900;
+}
+
+.center-panel{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.match-info-card{
+  background:#202126;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:6px;
+  padding:13px;
+}
+
+.match-info-label{
+  color:#aeb4c1;
+  font-size:12px;
+  margin-bottom:5px;
+}
+
+.match-info-value{
+  color:#fff;
+  font-weight:900;
+}
+
+.room-actions{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:10px;
+}
+
+.faceit-action{
+  border:0;
+  border-radius:6px;
+  padding:13px;
+  font-weight:1000;
+  cursor:pointer;
+  text-align:center;
+  text-decoration:none;
+}
+
+.faceit-action.pink{
+  background:#ff2c6d;
+  color:#fff;
+}
+
+.faceit-action.orange{
+  background:#ff5a1f;
+  color:#fff;
+}
+
+.faceit-action.dark{
+  background:#202126;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.matchroom-lower{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin-top:24px;
+}
+
+.room-chat-box{
+  min-height:280px;
+  max-height:380px;
+  overflow:auto;
+  background:#070708;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  padding:10px;
+}
+
+.chat-message{
+  padding:9px 8px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.chat-message strong{
+  color:#fff;
+}
+
+.chat-message p{
+  margin:4px 0 0;
+  color:#d8dbe4;
+}
+
+@media(max-width:900px){
+  .score-hero,.room-grid,.matchroom-lower{
+    grid-template-columns:1fr;
+  }
+
+  .team-side.right{
+    justify-content:flex-start;
+    text-align:left;
+  }
+
+  .score-center{
+    order:-1;
+  }
+}
