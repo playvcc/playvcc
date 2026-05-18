@@ -1,5 +1,5 @@
-// VCC Profile Data Custom PFP Display Fix
-// Loads target profile and displays custom PFP from saved profile image columns.
+// VCC Latest profile-data.js
+// Loads own profile or another player's profile using ?id=PLAYER_ID
 
 (async function(){
   let supabase = null;
@@ -10,20 +10,11 @@
 
   function setText(id, value){
     const el = byId(id);
-    if(el) el.textContent = value ?? el.textContent;
-  }
-
-  function setStatus(message){
-    const box =
-      byId('profileStatus') ||
-      byId('status') ||
-      document.querySelector('.log');
-
-    if(box) box.textContent = message;
+    if(el) el.textContent = value ?? '';
   }
 
   function avatar(p){
-    const url =
+    return (
       p?.avatar_url ||
       p?.profile_picture_url ||
       p?.profile_pic_url ||
@@ -31,37 +22,37 @@
       p?.pfp_url ||
       p?.photo_url ||
       p?.image_url ||
-      '';
-
-    return url && !url.includes('undefined') && !url.includes('null')
-      ? url
-      : 'assets/vcc-logo.png';
+      'assets/vcc-logo.png'
+    );
   }
 
-  function setImageElement(img, src){
-    if(!img) return;
+  function setImage(id, src){
+    const el = byId(id);
+    if(!el) return;
 
-    img.onerror = () => {
-      img.onerror = null;
-      img.src = 'assets/vcc-logo.png';
+    el.onerror = () => {
+      el.onerror = null;
+      el.src = 'assets/vcc-logo.png';
     };
 
-    img.src = src || 'assets/vcc-logo.png';
+    el.src = src || 'assets/vcc-logo.png';
   }
 
-  function setProfileImages(src){
+  function applyImages(src){
     [
       'profileAvatar',
       'profilePreview',
       'avatarPreview',
       'profileImage',
-      'pfpPreview',
-      'editProfileAvatar',
-      'currentPfp'
-    ].forEach(id => setImageElement(byId(id), src));
+      'pfpPreview'
+    ].forEach(id => setImage(id, src));
 
-    document.querySelectorAll('.player-avatar, .profile-avatar, img[data-profile-avatar]').forEach(img => {
-      setImageElement(img, src);
+    document.querySelectorAll('.player-avatar, .profile-avatar img').forEach(img => {
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = 'assets/vcc-logo.png';
+      };
+      img.src = src || 'assets/vcc-logo.png';
     });
   }
 
@@ -95,7 +86,6 @@
         .maybeSingle();
 
       if(result.error) throw result.error;
-      if(!result.data) throw new Error('Player profile not found.');
 
       profile = result.data;
       return;
@@ -112,36 +102,18 @@
       .eq('id', viewer.id)
       .maybeSingle();
 
-    if(result.error && result.error.code !== 'PGRST116') throw result.error;
+    if(result.error) throw result.error;
 
-    if(!result.data){
-      const username = viewer.email ? viewer.email.split('@')[0] : 'VCC Player';
-
-      const created = await supabase
-        .from('profiles')
-        .insert({
-          id:viewer.id,
-          email:viewer.email,
-          username,
-          display_name:username
-        })
-        .select()
-        .single();
-
-      if(created.error) throw created.error;
-      profile = created.data;
-    }else{
-      profile = result.data;
-    }
+    profile = result.data;
   }
 
   function loadStats(){
-    const wins = profile.wins ?? 0;
-    const losses = profile.losses ?? 0;
-    const mapsWon = profile.maps_won ?? profile.mapsWon ?? 0;
-    const mapsLost = profile.maps_lost ?? profile.mapsLost ?? 0;
-    const proPoints = profile.pro_points ?? profile.proPoints ?? 0;
-    const rating = profile.vcc_rating ?? profile.rating ?? 1000;
+    const wins = profile?.wins ?? 0;
+    const losses = profile?.losses ?? 0;
+    const mapsWon = profile?.maps_won ?? 0;
+    const mapsLost = profile?.maps_lost ?? 0;
+    const proPoints = profile?.pro_points ?? 0;
+    const rating = profile?.vcc_rating ?? 1000;
 
     setText('wins', wins);
     setText('losses', losses);
@@ -158,58 +130,40 @@
   }
 
   function applyProfile(){
+    if(!profile) return;
+
     const name = profileName(profile);
     const img = avatar(profile);
-    const isOwnProfile = viewer && viewer.id === profile.id;
 
     document.title = `${name} | VCC Player Profile`;
 
     setText('heroTitle', name);
     setText('profileTitle', name);
 
-    setProfileImages(img);
+    applyImages(img);
 
     setText('heroRank', profile.rank || 'Unranked');
     setText('heroPlatform', profile.platform || 'Console');
     setText('heroRegion', profile.region || 'NA');
 
-    setText('heroBio', profile.bio || 'Competitive console Valorant player competing in the VCC ecosystem.');
+    setText(
+      'heroBio',
+      profile.bio || 'Competitive console Valorant player competing in the VCC ecosystem.'
+    );
 
     setText('riotDisplay', profile.riot_id || 'Not set');
     setText('roleDisplay', profile.main_role || profile.role || 'Flex');
     setText('agentsDisplay', profile.main_agents || profile.agents || 'Not set');
     setText('platformDisplay', profile.platform || 'Console');
     setText('regionDisplay', profile.region || 'NA');
-    setText('genderDisplay', profile.gender ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1) : 'Not set');
-
-    const messageLinks = [...document.querySelectorAll('a,button')].filter(el =>
-      (el.textContent || '').trim().toLowerCase().includes('message player')
+    setText(
+      'genderDisplay',
+      profile.gender
+        ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)
+        : 'Not set'
     );
-
-    messageLinks.forEach(el => {
-      if(el.tagName.toLowerCase() === 'a'){
-        el.href = `inbox.html?to=${encodeURIComponent(profile.id)}`;
-      }else{
-        el.onclick = () => location.href = `inbox.html?to=${encodeURIComponent(profile.id)}`;
-      }
-    });
-
-    const editLinks = [...document.querySelectorAll('a,button')].filter(el =>
-      (el.textContent || '').trim().toLowerCase().includes('edit profile')
-    );
-
-    editLinks.forEach(el => {
-      if(isOwnProfile){
-        if(el.tagName.toLowerCase() === 'a') el.href = 'edit-profile.html';
-        el.style.display = '';
-      }else{
-        el.style.display = 'none';
-      }
-    });
 
     loadStats();
-
-    setStatus(isOwnProfile ? 'Viewing your profile.' : `Viewing ${name}'s public profile.`);
   }
 
   async function init(){
@@ -219,7 +173,6 @@
       await loadProfile();
       applyProfile();
     }catch(error){
-      setStatus('Profile load error: ' + error.message);
       console.error(error);
     }
   }
