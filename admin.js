@@ -138,20 +138,43 @@
   }
 
   function parseLocalDateTime(raw, fieldName){
-    if(!raw){
-      throw new Error(`${fieldName} is required.`);
-    }
+  if(!raw){
+    throw new Error(`${fieldName} is required.`);
+  }
 
-    // datetime-local usually gives YYYY-MM-DDTHH:mm.
-    // Some browsers may display MM/DD/YYYY, HH:MM AM but value is still parseable.
-    const date = new Date(raw);
+  // Properly handles datetime-local WITHOUT timezone shifting.
+  // Prevents forced 7:00 PM bug.
 
-    if(Number.isNaN(date.getTime())){
+  if(raw.includes('T')){
+    const [datePart, timePart] = raw.split('T');
+
+    const [year, month, day] = datePart.split('-').map(Number);
+    const [hour, minute] = timePart.split(':').map(Number);
+
+    const localDate = new Date(
+      year,
+      month - 1,
+      day,
+      hour,
+      minute,
+      0
+    );
+
+    if(Number.isNaN(localDate.getTime())){
       throw new Error(`${fieldName} has invalid date/time: ${raw}`);
     }
 
-    return date.toISOString();
+    return localDate.toISOString();
   }
+
+  const date = new Date(raw);
+
+  if(Number.isNaN(date.getTime())){
+    throw new Error(`${fieldName} has invalid date/time: ${raw}`);
+  }
+
+  return date.toISOString();
+}
 
   function getStartIso(){
     const raw = inputValue(
